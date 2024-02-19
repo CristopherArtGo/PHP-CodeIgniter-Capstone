@@ -8,7 +8,7 @@ It features Mady Bakehouse, a local bakehouse in Iloilo City, selling baked good
 The original frontend design is by Jhaver Gurtiza from village88 and I'll have some few tweaks to it.
 
 Initial Database Design:
-![Thumbnail](https://github.com/CristopherArtGp/PHP-CodeIgniter-Capstone/initial_db_design)
+![Thumbnail](https://github.com/CristopherArtGo/PHP-CodeIgniter-Capstone/blob/main/initial_db_design.png)
 
 <!-- ## Installation
 
