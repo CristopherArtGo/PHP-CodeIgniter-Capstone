@@ -86,7 +86,7 @@
                     <table class="products_table">
                         <thead>
                             <tr>
-                                <th><h3>All Products</h3></th>
+                                <th><h3>Products(<?= count($products) ?>)</h3></th>
                                 <th>ID #</th>
                                 <th>Price</th>
                                 <th>Category</th>

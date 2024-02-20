@@ -27,7 +27,6 @@
             <header>
                 <h1>Let’s order fresh items for you.</h1>
 <?php
-    var_dump($this->session->userdata());
     if ($userdata)
     {
 ?>
@@ -41,7 +40,7 @@
         }
 ?>
                     <button class="profile">
-                        <img src="/assets/images/profile.png" alt="#" />
+                        <img src="/assets/images/profile.png" alt="<?= $userdata['first_name'] ?>" />
                     </button>
                 </div>
                 <div class="dropdown show">
@@ -64,7 +63,7 @@
 ?>
             </header>
             <aside>
-                <a href="products_dashboard.html"><img src="/assets/images/short_logo.png" alt="Mady Bakehouse" /></a>
+                <a href=""><img src="/assets/images/short_logo.png" alt="Mady Bakehouse" /></a>
                 <!-- <ul>
                 <li class="active"><a href="#"></a></li>
                 <li><a href="#"></a></li>
@@ -75,7 +74,7 @@
                     <input type="text" name="search" placeholder="Search Products" />
                 </form>
                 <a class="show_cart" href="cart.html">Cart (0)</a>
-                <form action="/products/category" method="post" class="categories_form">
+                <form action="/products/product_sort" method="post" class="categories_form">
                     <h3>Categories</h3>
                     <ul>
                         <li>

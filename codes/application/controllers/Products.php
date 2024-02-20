@@ -64,7 +64,7 @@ class Products extends CI_Controller {
 		return array($products, $categories, $total_products);
 	}
 
-	public function category()
+	public function product_sort()
 	{
 		$result = $this->sort($this->input->post('category'));
 		$this->load->view('products/catalogue', array('userdata'=>$this->session->userdata('user'), 'products'=>$result[0], 'categories'=>$result[1], 'total_products'=>$result[2]));

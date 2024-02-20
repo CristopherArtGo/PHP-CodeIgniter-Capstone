@@ -10,6 +10,9 @@ The original frontend design is by Jhaver Gurtiza from village88 and I'll have s
 Initial Database Design:
 ![Thumbnail](https://github.com/CristopherArtGo/PHP-CodeIgniter-Capstone/blob/main/initial_db_design.png)
 
+##Clickable Prototpe
+Start Here --> https://htmlpreview.github.io/?https://github.com/CristopherArtGo/PHP-CodeIgniter-Capstone/blob/main/clickable_prototype/pages/index.html
+
 <!-- ## Installation
 
 1. Fork the project
