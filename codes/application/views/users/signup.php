@@ -21,22 +21,24 @@
     </head>
     <script>
         $(document).ready(function () {
-            $("form").submit(function (event) {
-                event.preventDefault();
-                return false;
-            });
+            $("input[name=first_name]").focus();
+            // $("form").submit(function (event) {
+                // event.preventDefault();
+                // return false;
+            // });
             /* prototype add */
-            $(".signup_btn").click(function () {
-                window.location.href = "catalogue.html";
-            });
+            // $(".signup_btn").click(function () {
+            //     window.location.href = "catalogue.html";
+            // });
         });
     </script>
     <body>
         <div class="wrapper">
-            <a href="/dashboard"><img src="/assets/images/main_logo.svg" alt="Mady Bakehouse" /></a>
-            <form action="process.php" method="post">
+            <a href=""><img src="/assets/images/main_logo.svg" alt="Mady Bakehouse" /></a>
+            <form action="/users/validate_signup" method="post">
                 <h2>Signup to order.</h2>
-                <a href="login.html">Already a member? Login here.</a>
+                <a href="/users/login">Already a member? Login here.</a>
+                <?= $errors ?>
                 <ul>
                     <li>
                         <input type="text" name="first_name" required />

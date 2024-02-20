@@ -36,12 +36,12 @@ body .wrapper form::after {
     background-image: url("../../images/cookie_stack.jpeg");
     border-radius: 0px 20px 20px 0px;
     background-size: 400px;
-    background-position: 100% 0%;
+    background-position: 100% 80%;
 }
 body .wrapper form h2 {
     color: #7d7d7d;
     font: 22px/24px roboto_medium, sans-serif;
-    margin-bottom: 46px;
+    margin-bottom: 23px;
     margin-top: 73px;
     padding-left: 60px;
     text-align: left;
@@ -131,4 +131,15 @@ body .wrapper form button:hover {
 body .wrapper .login_form ul li {
     display: block;
     width: 100% !important;
+}
+.errors {
+    background-color: #f93e3d;
+    color: white;
+    margin: 5px 50px;
+    border-radius: 5px;
+    padding: 0 5px;
+}
+
+ul {
+    margin-top: 23px;
 }
