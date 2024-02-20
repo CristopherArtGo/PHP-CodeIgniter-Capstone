@@ -27,7 +27,7 @@
             <header>
                 <h1>Let’s order fresh items for you.</h1>
 <?php
-// var_dump($products);
+    var_dump($this->session->userdata());
     if ($userdata)
     {
 ?>
@@ -75,45 +75,29 @@
                     <input type="text" name="search" placeholder="Search Products" />
                 </form>
                 <a class="show_cart" href="cart.html">Cart (0)</a>
-                <form action="process.php" method="post" class="categories_form">
+                <form action="/products/category" method="post" class="categories_form">
                     <h3>Categories</h3>
                     <ul>
                         <li>
-                            <button type="submit" class="active">
-                                <span>36</span><img src="/assets/images/all_products.svg" alt="#" />
+                            <button type="submit" class="active" name="category" value="All">
+                                <span><?= $total_products; ?></span><img src="/assets/images/all_products.svg" alt="#" />
                                 <h4>All Products</h4>
                             </button>
                         </li>
+<?php
+    foreach($categories as $category)
+    {
+?>
                         <li>
-                            <button type="submit">
-                                <span>36</span><img src="/assets/images/cookie.svg" alt="#" />
-                                <h4>Cookies</h4>
+                            <button type="submit" name="category" value="<?= $category['category'] ?>">
+                                <span><?= $category['product_count'] ?></span><img src="/assets/images/<?= $category['category'] ?>.svg" alt="<?= $category['category'] ?>" />
+                                <h4><?= $category['category'] ?></h4>
                             </button>
                         </li>
-                        <li>
-                            <button type="submit">
-                                <span>36</span><img src="/assets/images/brownie.svg" alt="#" />
-                                <h4>Brownies</h4>
-                            </button>
-                        </li>
-                        <li>
-                            <button type="submit">
-                                <span>36</span><img src="/assets/images/bread.svg" alt="#" />
-                                <h4>Bread</h4>
-                            </button>
-                        </li>
-                        <li>
-                            <button type="submit">
-                                <span>36</span><img src="/assets/images/cake.svg" alt="#" />
-                                <h4>Cakes</h4>
-                            </button>
-                        </li>
-                        <li>
-                            <button type="submit">
-                                <span>36</span><img src="/assets/images/pastry.svg" alt="#" />
-                                <h4>Pastries</h4>
-                            </button>
-                        </li>
+<?php
+    }
+?>
+                        
                     </ul>
                 </form>
                 <div>

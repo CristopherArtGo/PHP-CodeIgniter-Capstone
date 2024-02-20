@@ -24,6 +24,34 @@ class Product extends CI_Model {
         return $this->db->query($query, $this->security->xss_clean($product_id))->row_array();
     }
 
+
+    function get_product_by_category($category)
+    {
+        $result = $this->get_categories();
+        $categories = array();
+        foreach($result as $row)
+        {
+            $categories[] = $row['category'];
+        }
+
+        //checking if category is in categories table
+        if (in_array($category, $categories))
+        {
+            $query = "SELECT * FROM Products INNER JOIN Categories ON categories.category_id = products.category_id WHERE categories.category = ?";
+            return $this->db->query($query, $this->security->xss_clean($category))->result_array();
+        }
+        else
+        {
+            return $this->get_all_products();
+        }
+    }
+
+    function get_categories()
+    {
+        $query = "SELECT categories.category, COUNT(products.name) AS 'product_count' FROM Products INNER JOIN Categories ON categories.category_id = products.category_id GROUP BY products.category_id";
+        return $this->db->query($query)->result_array();
+    }
+
     //checks if product form has been filled correctly
     function validate_product() 
     {
