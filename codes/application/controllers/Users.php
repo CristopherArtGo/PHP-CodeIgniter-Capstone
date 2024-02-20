@@ -11,24 +11,26 @@ class Users extends CI_Controller {
 
 	public function index()
 	{
-		redirect('users/login');
+		redirect("/users/login");
 	}
 
 	public function login()
 	{
+		$this->check_loggedin();
 		$this->load->view('users/login', array('errors'=>$this->session->flashdata('errors')));
 	}
 
 	public function signup()
 	{
+		$this->check_loggedin();
 		$this->load->view('users/signup', array('errors'=>$this->session->flashdata('errors')));
 	}
 
 	public function check_loggedin()
 	{
-		if (!$this->session->userdata('logged_in'))
+		if ($this->session->userdata('logged_in'))
 		{
-			redirect('users/login');
+			redirect('products');
 		}
 	}
 
@@ -75,13 +77,16 @@ class Users extends CI_Controller {
 		else
 		{
 			$user = $this->User->get_user_by_email($user_credentials['email']);
-			$this->session->set_userdata(array('user_id' => $user['id'],
-											   'first_name' => $user['first_name'],
-											   'is_admin' => $user['is_admin'],
-											   'logged_in' => true));
-			echo "logged in";
-			// redirect('/dashboard');
+			$user = array('user_id' => $user['id'], 'first_name' => $user['first_name'], 'is_admin' => $user['is_admin'], 'logged_in' => true);
+			$this->session->set_userdata('user', $user);
+			redirect('/products');
 		}
 
+	}
+
+	public function logout()
+	{
+		$this->session->sess_destroy();
+		redirect("/");
 	}
 }

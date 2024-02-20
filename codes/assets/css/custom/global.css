@@ -143,6 +143,23 @@ body .wrapper header div a {
 body .wrapper header div a:hover {
     opacity: 0.8;
 }
+body .wrapper header div a.switch {
+    width: 154px;
+    background-color: #929864;
+    color: #fff;
+    border: 1px solid #929864;
+    font: 14px/17px proxima_nova_regular, sans-serif;
+    margin-right: 15px;
+    padding: 15px;
+    border-radius: 10px;
+    display: inline;
+    vertical-align: middle;
+}
+body .wrapper header div a.switch:hover {
+    color: #929864;
+    background-color: #fff;
+    opacity: 1;
+}
 body .wrapper header div a.signup_btn {
     background-color: #fff;
     border: 1px solid #929864;
@@ -152,6 +169,13 @@ body .wrapper header div a.signup_btn {
 body .wrapper header div a.login_btn {
     background-color: #929864;
     color: #fff;
+}
+body .wrapper header div button.profile {
+    border: none;
+    background-color: transparent;
+}
+body .wrapper header div button.profile img {
+    border-radius: 50%;
 }
 body .wrapper header div .profile_btn {
     font: 18px/46px proxima_nova_bold, sans-serif;
@@ -166,7 +190,7 @@ body .wrapper header div .profile_btn span {
     background-color: #e6e2ff;
     border-radius: 50%;
     font: 18px/21px proxima_nova_bold, sans-serif;
-    color: #9987fa;
+    color: #929864;
     display: inline-block;
     vertical-align: top;
     text-align: center;
