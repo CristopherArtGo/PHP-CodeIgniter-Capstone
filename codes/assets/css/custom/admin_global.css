@@ -676,6 +676,7 @@ body .wrapper > section > div .products_table tbody tr td:nth-child(1) {
 body .wrapper > section > div .products_table tbody tr td:nth-child(1) span {
     padding: 0px;
     border-right: 1px solid #45495d;
+    text-wrap: nowrap;
 }
 body .wrapper > section > div .products_table tbody tr td:nth-child(1) span img {
     width: 79px;
@@ -701,7 +702,7 @@ body .wrapper > section > div .products_table tbody tr td:nth-child(4) span {
 }
 body .wrapper > section > div .products_table tbody tr td:last-child {
     text-align: right;
-    width: 190px;
+    width: 200px;
     position: relative;
 }
 body .wrapper > section > div .products_table tbody tr td:last-child form {
@@ -1098,7 +1099,7 @@ body .form_modal .modal-dialog .modal-content form > button[type="button"] {
     padding-right: 15px;
 }
 .edit_product {
-    width: 90px;
+    width: 50px;
     height: 37px;
     border-radius: 10px;
     background: #373a4b;

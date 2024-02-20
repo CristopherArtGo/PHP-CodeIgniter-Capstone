@@ -52,16 +52,27 @@ class Products extends CI_Controller {
 		}
 	}
 
-	public function category()
+	public function sort($category)
 	{
-
-		$products = $this->Product->get_product_by_category($this->input->post('category'));
+		$products = $this->Product->get_product_by_category($category);
 		$categories = $this->Product->get_categories();
 		$total_products = 0;
 		foreach($categories as $category)
 		{
 			$total_products += $category['product_count'];
 		}
-		$this->load->view('products/catalogue', array('userdata'=>$this->session->userdata('user'), 'products'=>$products, 'categories'=>$categories, 'total_products'=>$total_products));
+		return array($products, $categories, $total_products);
+	}
+
+	public function category()
+	{
+		$result = $this->sort($this->input->post('category'));
+		$this->load->view('products/catalogue', array('userdata'=>$this->session->userdata('user'), 'products'=>$result[0], 'categories'=>$result[1], 'total_products'=>$result[2]));
+	}
+
+	public function admin_sort()
+	{
+		$result = $this->sort($this->input->post('category'));
+		$this->load->view('products/admin_products', array('userdata'=>$this->session->userdata('user'), 'products'=>$result[0], 'categories'=>$result[1], 'total_products'=>$result[2]));
 	}
 }

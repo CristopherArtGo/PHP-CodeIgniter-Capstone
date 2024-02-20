@@ -18,14 +18,14 @@
     </head>
     <script>
         $(document).ready(function () {
-            $("form").submit(function (event) {
-                event.preventDefault();
-                return false;
-            });
-            /* prototype add */
-            $(".switch").click(function () {
-                window.location.href = "products_dashboard.html";
-            });
+            // $("form").submit(function (event) {
+            //     event.preventDefault();
+            //     return false;
+            // });
+            // /* prototype add */
+            // $(".switch").click(function () {
+            //     window.location.href = "products_dashboard.html";
+            // });
         });
     </script>
     <body>
@@ -58,45 +58,28 @@
                     <input type="text" name="search" placeholder="Search Products" />
                 </form>
                 <button class="add_product" data-toggle="modal" data-target="#add_product_modal">Add Product</button>
-                <form action="process.php" method="post" class="status_form">
+                <form action="/products/admin_sort" method="post" class="status_form">
                     <h3>Categories</h3>
                     <ul>
                         <li>
                             <button type="submit" class="active">
-                                <span>36</span><img src="/assets/images/all_products.svg" alt="#" />
+                                <span><?= $total_products ?></span><img src="/assets/images/all_products.svg" alt="#" />
                                 <h4>All Products</h4>
                             </button>
                         </li>
+<?php
+    foreach($categories as $category)
+    {
+?>
                         <li>
-                            <button type="submit">
-                                <span>36</span><img src="/assets/images/cookie.svg" alt="#" />
-                                <h4>Cookies</h4>
+                            <button type="submit" name="category" value="<?= $category['category'] ?>">
+                                <span><?= $category['product_count'] ?></span><img src="/assets/images/<?= $category['category'] ?>.svg" alt="<?= $category['category'] ?>" />
+                                <h4><?= $category['category'] ?></h4>
                             </button>
                         </li>
-                        <li>
-                            <button type="submit">
-                                <span>36</span><img src="/assets/images/brownie.svg" alt="#" />
-                                <h4>Brownies</h4>
-                            </button>
-                        </li>
-                        <li>
-                            <button type="submit">
-                                <span>36</span><img src="/assets/images/bread.svg" alt="#" />
-                                <h4>Bread</h4>
-                            </button>
-                        </li>
-                        <li>
-                            <button type="submit">
-                                <span>36</span><img src="/assets/images/cake.svg" alt="#" />
-                                <h4>Cakes</h4>
-                            </button>
-                        </li>
-                        <li>
-                            <button type="submit">
-                                <span>36</span><img src="/assets/images/pastry.svg" alt="#" />
-                                <h4>Pastries</h4>
-                            </button>
-                        </li>
+<?php
+    }
+?>
                     </ul>
                 </form>
                 <div>
@@ -106,25 +89,34 @@
                                 <th><h3>All Products</h3></th>
                                 <th>ID #</th>
                                 <th>Price</th>
-                                <th>Caregory</th>
+                                <th>Category</th>
                                 <th>Inventory</th>
                                 <th>Sold</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
+<?php
+    foreach($products as $product)
+    {
+        $main_image = 'short_logo.png';
+        if ($product['images'])
+        {
+            $main_image = "products/".$product['id']."/".json_decode($product['images'], true)['1'];
+        }
+?>
                             <tr>
                                 <td>
                                     <span>
-                                        <img src="/assets/images/food.png" alt="#" />
-                                        Cookie
+                                        <img src="/assets/images/<?= $main_image ?>" alt="#" />
+                                        <?= $product['name'] ?>
                                     </span>
                                 </td>
-                                <td><span>123</span></td>
-                                <td><span>$ 10</span></td>
-                                <td><span>Vegetable</span></td>
-                                <td><span>123</span></td>
-                                <td><span>1000</span></td>
+                                <td><span><?= $product['id'] ?></span></td>
+                                <td><span>$ <?= $product['price'] ?></span></td>
+                                <td><span></span></td>
+                                <td><span><?= $product['stock'] ?></span></td>
+                                <td><span><?= $product['sold'] ?></span></td>
                                 <td>
                                     <span>
                                         <button class="edit_product">Edit</button>
@@ -137,246 +129,9 @@
                                     </form>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <span>
-                                        <img src="/assets/images/food.png" alt="#" />
-                                        Cookie
-                                    </span>
-                                </td>
-                                <td><span>123</span></td>
-                                <td><span>$ 10</span></td>
-                                <td><span>Vegetable</span></td>
-                                <td><span>123</span></td>
-                                <td><span>1000</span></td>
-                                <td>
-                                    <span>
-                                        <button class="edit_product">Edit</button>
-                                        <button class="delete_product">X</button>
-                                    </span>
-                                    <form class="delete_product_form" action="process.php" method="post">
-                                        <p>Are you sure you want to remove this item?</p>
-                                        <button type="button" class="cancel_remove">Cancel</button>
-                                        <button type="submit">Remove</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span>
-                                        <img src="/assets/images/food.png" alt="#" />
-                                        Cookie
-                                    </span>
-                                </td>
-                                <td><span>123</span></td>
-                                <td><span>$ 10</span></td>
-                                <td><span>Vegetable</span></td>
-                                <td><span>123</span></td>
-                                <td><span>1000</span></td>
-                                <td>
-                                    <span>
-                                        <button class="edit_product">Edit</button>
-                                        <button class="delete_product">X</button>
-                                    </span>
-                                    <form class="delete_product_form" action="process.php" method="post">
-                                        <p>Are you sure you want to remove this item?</p>
-                                        <button type="button" class="cancel_remove">Cancel</button>
-                                        <button type="submit">Remove</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span>
-                                        <img src="/assets/images/food.png" alt="#" />
-                                        Cookie
-                                    </span>
-                                </td>
-                                <td><span>123</span></td>
-                                <td><span>$ 10</span></td>
-                                <td><span>Vegetable</span></td>
-                                <td><span>123</span></td>
-                                <td><span>1000</span></td>
-                                <td>
-                                    <span>
-                                        <button class="edit_product">Edit</button>
-                                        <button class="delete_product">X</button>
-                                    </span>
-                                    <form class="delete_product_form" action="process.php" method="post">
-                                        <p>Are you sure you want to remove this item?</p>
-                                        <button type="button" class="cancel_remove">Cancel</button>
-                                        <button type="submit">Remove</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span>
-                                        <img src="/assets/images/food.png" alt="#" />
-                                        Cookie
-                                    </span>
-                                </td>
-                                <td><span>123</span></td>
-                                <td><span>$ 10</span></td>
-                                <td><span>Vegetable</span></td>
-                                <td><span>123</span></td>
-                                <td><span>1000</span></td>
-                                <td>
-                                    <span>
-                                        <button class="edit_product">Edit</button>
-                                        <button class="delete_product">X</button>
-                                    </span>
-                                    <form class="delete_product_form" action="process.php" method="post">
-                                        <p>Are you sure you want to remove this item?</p>
-                                        <button type="button" class="cancel_remove">Cancel</button>
-                                        <button type="submit">Remove</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span>
-                                        <img src="/assets/images/food.png" alt="#" />
-                                        Cookie
-                                    </span>
-                                </td>
-                                <td><span>123</span></td>
-                                <td><span>$ 10</span></td>
-                                <td><span>Vegetable</span></td>
-                                <td><span>123</span></td>
-                                <td><span>1000</span></td>
-                                <td>
-                                    <span>
-                                        <button class="edit_product">Edit</button>
-                                        <button class="delete_product">X</button>
-                                    </span>
-                                    <form class="delete_product_form" action="process.php" method="post">
-                                        <p>Are you sure you want to remove this item?</p>
-                                        <button type="button" class="cancel_remove">Cancel</button>
-                                        <button type="submit">Remove</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span>
-                                        <img src="/assets/images/food.png" alt="#" />
-                                        Cookie
-                                    </span>
-                                </td>
-                                <td><span>123</span></td>
-                                <td><span>$ 10</span></td>
-                                <td><span>Vegetable</span></td>
-                                <td><span>123</span></td>
-                                <td><span>1000</span></td>
-                                <td>
-                                    <span>
-                                        <button class="edit_product">Edit</button>
-                                        <button class="delete_product">X</button>
-                                    </span>
-                                    <form class="delete_product_form" action="process.php" method="post">
-                                        <p>Are you sure you want to remove this item?</p>
-                                        <button type="button" class="cancel_remove">Cancel</button>
-                                        <button type="submit">Remove</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span>
-                                        <img src="/assets/images/food.png" alt="#" />
-                                        Cookie
-                                    </span>
-                                </td>
-                                <td><span>123</span></td>
-                                <td><span>$ 10</span></td>
-                                <td><span>Vegetable</span></td>
-                                <td><span>123</span></td>
-                                <td><span>1000</span></td>
-                                <td>
-                                    <span>
-                                        <button class="edit_product">Edit</button>
-                                        <button class="delete_product">X</button>
-                                    </span>
-                                    <form class="delete_product_form" action="process.php" method="post">
-                                        <p>Are you sure you want to remove this item?</p>
-                                        <button type="button" class="cancel_remove">Cancel</button>
-                                        <button type="submit">Remove</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span>
-                                        <img src="/assets/images/food.png" alt="#" />
-                                        Cookie
-                                    </span>
-                                </td>
-                                <td><span>123</span></td>
-                                <td><span>$ 10</span></td>
-                                <td><span>Vegetable</span></td>
-                                <td><span>123</span></td>
-                                <td><span>1000</span></td>
-                                <td>
-                                    <span>
-                                        <button class="edit_product">Edit</button>
-                                        <button class="delete_product">X</button>
-                                    </span>
-                                    <form class="delete_product_form" action="process.php" method="post">
-                                        <p>Are you sure you want to remove this item?</p>
-                                        <button type="button" class="cancel_remove">Cancel</button>
-                                        <button type="submit">Remove</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span>
-                                        <img src="/assets/images/food.png" alt="#" />
-                                        Cookie
-                                    </span>
-                                </td>
-                                <td><span>123</span></td>
-                                <td><span>$ 10</span></td>
-                                <td><span>Vegetable</span></td>
-                                <td><span>123</span></td>
-                                <td><span>1000</span></td>
-                                <td>
-                                    <span>
-                                        <button class="edit_product">Edit</button>
-                                        <button class="delete_product">X</button>
-                                    </span>
-                                    <form class="delete_product_form" action="process.php" method="post">
-                                        <p>Are you sure you want to remove this item?</p>
-                                        <button type="button" class="cancel_remove">Cancel</button>
-                                        <button type="submit">Remove</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span>
-                                        <img src="/assets/images/food.png" alt="#" />
-                                        Cookie
-                                    </span>
-                                </td>
-                                <td><span>123</span></td>
-                                <td><span>$ 10</span></td>
-                                <td><span>Vegetable</span></td>
-                                <td><span>123</span></td>
-                                <td><span>1000</span></td>
-                                <td>
-                                    <span>
-                                        <button class="edit_product">Edit</button>
-                                        <button class="delete_product">X</button>
-                                    </span>
-                                    <form class="delete_product_form" action="process.php" method="post">
-                                        <p>Are you sure you want to remove this item?</p>
-                                        <button type="button" class="cancel_remove">Cancel</button>
-                                        <button type="submit">Remove</button>
-                                    </form>
-                                </td>
-                            </tr>
+<?php
+    }
+?>
                         </tbody>
                     </table>
                 </div>
