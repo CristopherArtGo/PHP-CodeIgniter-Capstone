@@ -34,10 +34,10 @@
     </script>
     <body>
         <div class="wrapper">
-            <a href="/dashboard"><img src="/assets/images/main_logo.svg" alt="Mady Bakehouse" /></a>
-            <form action="/process/process.php" method="post" class="login_form">
+            <a href=""><img src="/assets/images/main_logo.svg" alt="Mady Bakehouse" /></a>
+            <form action="/users/process/" method="post" class="login_form">
                 <h2>Login to order.</h2>
-                <a href="signup.html">New Member? Register here.</a>
+                <a href="/users/signup">New Member? Register here.</a>
                 <ul>
                     <li>
                         <input type="text" name="email" required />
