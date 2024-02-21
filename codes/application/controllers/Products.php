@@ -76,13 +76,17 @@ class Products extends CI_Controller {
 	//receives user input for category
 	public function sort_category()
 	{
+		// var_dump($this->input->post());
 		if ($this->input->post('category'))
 		{
 			$this->session->set_userdata('category', $this->input->post('category'));
 		}
 		$result = $this->sort($this->session->userdata('category'));
-		$cart_items = $this->check_cart();
-		$this->load->view('products/catalogue', array('userdata'=>$this->session->userdata('user'), 'products'=>$result[0], 'categories'=>$result[1], 'total_products'=>$result[2], 'cart_items'=>$cart_items));
+		// $cart_items = $this->check_cart();
+		// $this->load->view('products/catalogue', array('userdata'=>$this->session->userdata('user'), 'products'=>$result[0], 'categories'=>$result[1], 'total_products'=>$result[2], 'cart_items'=>$cart_items));
+		$this->load->view('partials/sorted_products', array('products'=>$result[0]));
+		// $this->output->enable_profiler();
+
 	}
 
 	//receives user input for category
@@ -101,7 +105,7 @@ class Products extends CI_Controller {
 	{
 		$result = $this->sort($this->session->userdata('category'), $this->input->post('search'));
 		$cart_items = $this->check_cart();
-		$this->load->view('products/catalogue', array('userdata'=>$this->session->userdata('user'), 'products'=>$result[0], 'categories'=>$result[1], 'total_products'=>$result[2], 'cart_items'=>$cart_items));
+		$this->load->view('partials/sorted_products', array('userdata'=>$this->session->userdata('user'), 'products'=>$result[0], 'categories'=>$result[1], 'total_products'=>$result[2], 'cart_items'=>$cart_items));
 		// $this->output->enable_profiler();
 	}
 

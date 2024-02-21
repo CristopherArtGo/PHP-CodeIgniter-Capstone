@@ -17,29 +17,39 @@
 
         <link rel="stylesheet" href="/assets/css/custom/global.css" />
         <link rel="stylesheet" href="/assets/css/custom/product_dashboard.css" />
+        <!-- <script src="/assets/js/global/admin_products.js"></script> -->
     </head>
 
     <script>
-        $(document).ready(function () {
-            // $(document).on(GOIT'submit', 'form', function() {
-                //     $.post($(this).attr('action'), $(this).serialize(), function(res) {
-                //         //adding data entries in the table element
-                //         $('#products').html(res);
-                        
-                //         //updating form values
-                //         // $.get("/requests/form/", function(data) {
-                //         //     $('form').html(data);
-                //         // });
-                //     });
-                //     return false;
-                // });
+        $(document).ready(function () {                   
+            $(document).on('click', '.category_button', function () {
+                $('.category_button').removeClass('active');
+                $(this).addClass('active');
+                let category = $(this).attr('value');
+                let post = $(this).serializeArray();
+                post.push({"name": "category", "value": category});
 
-            //     $('#search_bar').on('change', function (){
-            //         $(this).parent().submit();
-            //     })
+                $.post("/products/sort_category", post, function(res) {
+                    $('#product_list').html(res);
+                    // console.log(res);
+                    // return false;
+                });
+                return false;
+            });
+
+            $('#search_bar').on('keyup', function (){
+                $(this).parent().submit();
+            });
+
+            $(document).on('submit', '#search_bar', function() {
+                $.post("/products/sort_name", $(this).serialize(), function(res) {
+                    $('#product_list').html(res);
+                });
+                return false;
+            });
+            
                 
             //     //auto submitting it once for first page load
-            //     $('.search_form').submit();
         });
     </script>
     <body>
@@ -99,7 +109,7 @@
                     <h3>Categories</h3>
                     <ul>
                         <li>
-                            <button type="submit" class="active" name="category" value="All">
+                            <button id="all_products" type="submit" class="active category_button" name="category" value="All">
                                 <span><?= $total_products; ?></span><img src="/assets/images/all_products.svg" alt="#" />
                                 <h4>All Products</h4>
                             </button>
@@ -109,7 +119,8 @@
     {
 ?>
                         <li>
-                            <button type="submit" name="category" value="<?= $category['category'] ?>">
+                            <button type="submit" class="category_button" name="category" value="<?= $category['category'] ?>" >
+                            <!-- <button class="category_button" data_id="<?= $category['category'] ?>" > -->
                                 <span><?= $category['product_count'] ?></span><img src="/assets/images/<?= $category['category'] ?>.svg" alt="<?= $category['category'] ?>" />
                                 <h4><?= $category['category'] ?></h4>
                             </button>
@@ -120,7 +131,7 @@
                         
                     </ul>
                 </form>
-                <div id="products">
+                <div id="product_list">
                     <h3>All Products(<?= count($products) ?>)</h3>
                     <ul>
 <?php
