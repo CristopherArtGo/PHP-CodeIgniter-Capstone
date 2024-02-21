@@ -21,10 +21,13 @@
     </head>
 
     <script>
-        $(document).ready(function () {                   
+        $(document).ready(function () {   
+            // AJAX for category buttons                
             $(document).on('click', '.category_button', function () {
                 $('.category_button').removeClass('active');
                 $(this).addClass('active');
+                $('#search_bar').val('');
+
                 let category = $(this).attr('value');
                 let post = $(this).serializeArray();
                 post.push({"name": "category", "value": category});
@@ -37,19 +40,20 @@
                 return false;
             });
 
-            $('#search_bar').on('keyup', function (){
-                $(this).parent().submit();
-            });
-
-            $(document).on('submit', '#search_bar', function() {
+            //AJAX for search form
+            $(document).on('submit', '.search_form', function() {
                 $.post("/products/sort_name", $(this).serialize(), function(res) {
                     $('#product_list').html(res);
                 });
                 return false;
             });
+
+            $('#search_bar').on('keyup', function (){
+                $(this).parent().submit();
+            });
             
-                
-            //     //auto submitting it once for first page load
+            //auto clicking all products for first page load
+            $('#all_products').click();
         });
     </script>
     <body>
@@ -102,7 +106,6 @@
             <section>
                 <form action="/products/sort_name" method="post" class="search_form">
                     <input type="text" name="search" placeholder="Search Products" id="search_bar"/>
-                    <input type="submit">
                 </form>
                 <a class="show_cart" href="/products/cart">Cart (<?= count($cart_items) ?>)</a>
                 <form action="/products/sort_category" method="post" class="categories_form">
@@ -132,36 +135,7 @@
                     </ul>
                 </form>
                 <div id="product_list">
-                    <h3>All Products(<?= count($products) ?>)</h3>
-                    <ul>
-<?php
-    foreach($products as $product)
-    {
-        $main_image = 'short_logo.png';
-        if ($product['images'])
-        {
-            $main_image = "products/".$product['id']."/".json_decode($product['images'], true)['1'];
-        }
-?>
-                        <li>
-                            <a href="/products/view_product/<?= $product['id'] ?>">
-                                <img src="/assets/images/<?= $main_image ?>" alt="<?= $product['name'] ?>" />
-                                <h3><?= $product['name'] ?></h3>
-                                <ul class="rating">
-                                    <li></li>
-                                    <li></li>
-                                    <li></li>
-                                    <li></li>
-                                    <li></li>
-                                </ul>
-                                <span>36 Rating</span>
-                                <span class="price">$ <?= $product['price'] ?></span>
-                            </a>
-                        </li>
-<?php
-    }
-?>
-                    </ul>
+                    
                 </div>
             </section>
         </div>
