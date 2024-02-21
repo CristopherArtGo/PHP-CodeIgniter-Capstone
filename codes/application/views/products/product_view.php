@@ -29,50 +29,88 @@
                     });
                 return false;
             });
+            $('.show_image').click(function () {
+                $('.show_image').parent().removeClass('active');
+                $(this).parent().addClass('active');
+            });
+            
         });
     </script>
     <body>
         <div class="wrapper">
             <header>
                 <h1>Let’s order fresh items for you.</h1>
+                <?php
+    if ($userdata)
+    {
+?>
                 <div>
-                    <a class="signup_btn" href="signup.html">Signup</a>
-                    <a class="login_btn" href="login.html">Login</a>
+                    <button class="profile">
+                        <img src="/assets/images/profile.png" alt="<?= $userdata['first_name'] ?>" />
+                    </button>
                 </div>
+                <div class="dropdown show">
+                    <a class="btn btn-secondary dropdown-toggle profile_dropdown" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                    <div class="dropdown-menu admin_dropdown" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="/users/logout">Logout</a>
+                    </div>
+                </div>
+<?php
+    }
+    else
+    {
+?>
+                <div>
+                            <a class="signup_btn" href="/users/signup">Signup</a>
+                            <a class="login_btn" href="/users">Login</a>
+                </div>
+<?php
+    }
+?>
             </header>
             <aside>
-                <a href="catalogue.html"><img src="/assets/images/short_logo.png" alt="Mady Bakehouse" /></a>
+                <a href="/products"><img src="/assets/images/short_logo.png" alt="Mady Bakehouse" /></a>
                 <!-- <ul>
                 <li class="active"><a href="#"></a></li>
                 <li><a href="#"></a></li>
             </ul> -->
             </aside>
             <section>
-                <form action="process.php" method="post" class="search_form">
+                <form action="/products/sort_name" method="post" class="search_form">
                     <input type="text" name="search" placeholder="Search Products" />
                 </form>
-                <a class="show_cart" href="cart.html">Cart (0)</a>
+                <a class="show_cart" href="/products/cart">Cart (<?= count($cart_items) ?>)</a>
                 <a href="catalogue.html">Go Back</a>
                 <ul>
                     <li>
-                        <img src="/assets/images/food.png" alt="food" />
+<?php
+    $main_image = 'short_logo.png';
+    if ($product['images'])
+    {
+        $images = json_decode($product['images'], true);
+        $main_image = $product['id']."/".$images['1'];
+    }
+?>
+                        <img src="/assets/images/products/<?= $main_image ?>" alt="food" />
                         <ul>
                             <li class="active">
-                                <button class="show_image"><img src="/assets/images/food.png" alt="food" /></button>
+                                <button class="show_image"><img src="/assets/images/products/<?= $main_image ?>" alt="<?= $product['name'] ?> 1" /></button>
                             </li>
+
+<?php
+    for($i = 2; $i <= count($images); $i++)
+    {
+?>
                             <li>
-                                <button class="show_image"><img src="/assets/images/food.png" alt="food" /></button>
+                                <button class="show_image"><img src="/assets/images/products/<?= $product['id'] ?>/<?= $images[$i] ?>" alt="<?= $product['name'] ?> <?= $i ?>" /></button>
                             </li>
-                            <li>
-                                <button class="show_image"><img src="/assets/images/food.png" alt="food" /></button>
-                            </li>
-                            <li>
-                                <button class="show_image"><img src="/assets/images/food.png" alt="food" /></button>
-                            </li>
+<?php
+    }
+?>
                         </ul>
                     </li>
                     <li>
-                        <h2>Vegetables</h2>
+                        <h2><?= $product['name'] ?></h2>
                         <ul class="rating">
                             <li></li>
                             <li></li>
@@ -81,7 +119,7 @@
                             <li></li>
                         </ul>
                         <span>36 Rating</span>
-                        <span class="amount">$ 10</span>
+                        <span class="amount">$ <?= $product['price'] ?></span>
                         <p>Lorem ipsum dolor sit amet consectetur. Eget sit posuere enim facilisi. Pretium orci venenatis habitasse gravida nulla tincidunt iaculis. Aliquet at massa quisque libero viverra ut sed. Est vulputate est rutrum nunc nunc pellentesque ultrices pharetra. Mauris euismod sed vel quisque tincidunt suspendisse sed turpis volutpat.</p>
                         <form action="" method="post" id="add_to_cart_form">
                             <ul>

@@ -54,11 +54,11 @@
                 </ul>
             </aside>
             <section>
-                <form action="process.php" method="post" class="search_form">
+                <form action="admin_sort_name" method="post" class="search_form">
                     <input type="text" name="search" placeholder="Search Products" />
                 </form>
                 <button class="add_product" data-toggle="modal" data-target="#add_product_modal">Add Product</button>
-                <form action="/products/admin_sort" method="post" class="status_form">
+                <form action="/products/admin_sort_category" method="post" class="status_form">
                     <h3>Categories</h3>
                     <ul>
                         <li>

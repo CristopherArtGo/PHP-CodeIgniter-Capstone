@@ -20,7 +20,27 @@
     </head>
 
     <script>
-        $(document).ready(function () {});
+        $(document).ready(function () {
+            // $(document).on(GOIT'submit', 'form', function() {
+                //     $.post($(this).attr('action'), $(this).serialize(), function(res) {
+                //         //adding data entries in the table element
+                //         $('#products').html(res);
+                        
+                //         //updating form values
+                //         // $.get("/requests/form/", function(data) {
+                //         //     $('form').html(data);
+                //         // });
+                //     });
+                //     return false;
+                // });
+
+            //     $('#search_bar').on('change', function (){
+            //         $(this).parent().submit();
+            //     })
+                
+            //     //auto submitting it once for first page load
+            //     $('.search_form').submit();
+        });
     </script>
     <body>
         <div class="wrapper">
@@ -70,11 +90,12 @@
             </ul> -->
             </aside>
             <section>
-                <form action="process.php" method="post" class="search_form">
-                    <input type="text" name="search" placeholder="Search Products" />
+                <form action="/products/sort_name" method="post" class="search_form">
+                    <input type="text" name="search" placeholder="Search Products" id="search_bar"/>
+                    <input type="submit">
                 </form>
-                <a class="show_cart" href="cart.html">Cart (0)</a>
-                <form action="/products/product_sort" method="post" class="categories_form">
+                <a class="show_cart" href="/products/cart">Cart (<?= count($cart_items) ?>)</a>
+                <form action="/products/sort_category" method="post" class="categories_form">
                     <h3>Categories</h3>
                     <ul>
                         <li>
@@ -99,7 +120,7 @@
                         
                     </ul>
                 </form>
-                <div>
+                <div id="products">
                     <h3>All Products(<?= count($products) ?>)</h3>
                     <ul>
 <?php

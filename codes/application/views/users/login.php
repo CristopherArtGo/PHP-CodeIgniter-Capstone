@@ -42,11 +42,11 @@
                 <?= $errors ?>
                 <ul>
                     <li>
-                        <input type="text" name="email" required />
+                        <input type="text" name="email" required value="go.cristopher@gmail.com"/>
                         <label>Email</label>
                     </li>
                     <li>
-                        <input type="password" name="password" required />
+                        <input type="password" name="password" required value="12345678" />
                         <label>Password</label>
                     </li>
                 </ul>

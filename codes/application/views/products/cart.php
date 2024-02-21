@@ -31,7 +31,7 @@
                 </div>
             </header>
             <aside>
-                <a href="catalogue.html"><img src="/assets/images/short_logo.png" alt="Mady Bakehouse" /></a>
+                <a href="/products"><img src="/assets/images/short_logo.png" alt="Mady Bakehouse" /></a>
                 <!-- <ul>
                 <li class="active"><a href="#"></a></li>
                 <li><a href="#"></a></li>

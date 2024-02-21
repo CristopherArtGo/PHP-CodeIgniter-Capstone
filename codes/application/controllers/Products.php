@@ -11,68 +11,110 @@ class Products extends CI_Controller {
 
 	public function index()
 	{
-        $products = $this->Product->get_all_products();
-		$categories = $this->Product->get_categories();
-		$total_products = 0;
-		foreach($categories as $category)
-		{
-			$total_products += $category['product_count'];
-		}
-		$this->load->view('products/catalogue', array('userdata'=>$this->session->userdata('user'), 'products'=>$products, 'categories'=>$categories, 'total_products'=>$total_products));
+		$result = $this->load_products();
+		$result['cart_items'] = $this->check_cart();
+		$this->load->view('products/catalogue', $result);
     }
 
     public function admin_products()
     {
-		$this->check_loggedin();
 		$this->check_admin();
-		$products = $this->Product->get_all_products();
+		$result = $this->load_products();
+		$this->load->view('products/admin_products', $result);
+    }
+
+	//default loading of all products
+	public function load_products()
+	{
+		$this->session->unset_userdata('category');
+        $products = $this->Product->get_all_products();
 		$categories = $this->Product->get_categories();
 		$total_products = 0;
+
 		foreach($categories as $category)
 		{
 			$total_products += $category['product_count'];
 		}
 
-		$this->load->view('products/admin_products', array('userdata'=>$this->session->userdata('user'), 'products'=>$products, 'categories'=>$categories, 'total_products'=>$total_products));
-    }
+		$result = array('userdata'=>$this->session->userdata('user'), 'products'=>$products, 'categories'=>$categories, 'total_products'=>$total_products);
+		return $result;
+	}
 
-	public function check_loggedin()
+	public function check_cart()
 	{
-		if ($this->session->userdata('logged_in') === false)
+		$cart_items = array();
+		if($this->session->userdata('user'))
 		{
-			redirect('users/login');
+			$cart_items = $this->Product->get_cart_items($this->session->userdata('user')['user_id']);
 		}
+		return $cart_items;
 	}
 
 	public function check_admin()
 	{
-		if ($this->session->userdata('is_admin'))
+		if (!$this->session->userdata('user')['is_admin'])
 		{
-			redirect('users/login');
+			redirect('products');
 		}
 	}
 
-	public function sort($category)
+	//sorts category and name, if no category was given, it will use the previous category given
+	public function sort($category, $name = NULL)
 	{
-		$products = $this->Product->get_product_by_category($category);
+		$products = $this->Product->search_product($category, $name);
 		$categories = $this->Product->get_categories();
 		$total_products = 0;
+
 		foreach($categories as $category)
 		{
 			$total_products += $category['product_count'];
 		}
+
 		return array($products, $categories, $total_products);
 	}
 
-	public function product_sort()
+	//receives user input for category
+	public function sort_category()
 	{
-		$result = $this->sort($this->input->post('category'));
-		$this->load->view('products/catalogue', array('userdata'=>$this->session->userdata('user'), 'products'=>$result[0], 'categories'=>$result[1], 'total_products'=>$result[2]));
+		if ($this->input->post('category'))
+		{
+			$this->session->set_userdata('category', $this->input->post('category'));
+		}
+		$result = $this->sort($this->session->userdata('category'));
+		$cart_items = $this->check_cart();
+		$this->load->view('products/catalogue', array('userdata'=>$this->session->userdata('user'), 'products'=>$result[0], 'categories'=>$result[1], 'total_products'=>$result[2], 'cart_items'=>$cart_items));
 	}
 
-	public function admin_sort()
+	//receives user input for category
+	public function admin_sort_category()
 	{
+		if ($this->input->post('category'))
+		{
+			$this->session->set_userdata('category', $this->input->post('category'));
+		}
 		$result = $this->sort($this->input->post('category'));
 		$this->load->view('products/admin_products', array('userdata'=>$this->session->userdata('user'), 'products'=>$result[0], 'categories'=>$result[1], 'total_products'=>$result[2]));
+	}
+
+	//receives user input for name
+	public function sort_name() 
+	{
+		$result = $this->sort($this->session->userdata('category'), $this->input->post('search'));
+		$cart_items = $this->check_cart();
+		$this->load->view('products/catalogue', array('userdata'=>$this->session->userdata('user'), 'products'=>$result[0], 'categories'=>$result[1], 'total_products'=>$result[2], 'cart_items'=>$cart_items));
+		// $this->output->enable_profiler();
+	}
+
+	public function view_product($product_id)
+	{
+		$product = $this->Product->get_product_by_id($product_id);
+		$cart_items = $this->check_cart();
+		$this->load->view('products/product_view', array('userdata'=>$this->session->userdata('user'), 'product'=>$product, 'cart_items'=>$cart_items));
+	}
+
+	public function cart()
+	{
+		$cart_items = $this->check_cart();
+		$this->load->view('products/cart', array('cart_items'=>$cart_items));
 	}
 }
