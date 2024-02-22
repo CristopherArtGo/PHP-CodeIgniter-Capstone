@@ -152,13 +152,13 @@ body .wrapper > section > ul > li:last-child p {
     color: #7d7d7d;
     font: 14px/24px roboto_regular, sans-serif;
     margin-top: 30px;
-    width: 940px;
+    width: 100%;
 }
 body .wrapper > section > ul > li:last-child form {
     border-top: 1px solid #f1f1f1;
     bottom: 31px;
     position: absolute;
-    width: 940px;
+    width: 100%;
 }
 body .wrapper > section > ul > li:last-child form > ul {
     padding-top: 30px;
@@ -183,6 +183,11 @@ body .wrapper > section > ul > li:last-child form > ul > li input {
     text-align: center;
     vertical-align: top;
     width: 110px;
+}
+body .wrapper > section > ul > li:last-child form > ul > li input::-webkit-outer-spin-button,
+body .wrapper > section > ul > li:last-child form > ul > li input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 body .wrapper > section > ul > li:last-child form > ul > li > button {
     background-color: #fff;
@@ -355,7 +360,7 @@ body .wrapper #success_modal .modal-dialog .modal-content h3::before {
     background-color: #ffffff;
     border-radius: 8px;
     color: #7d7d7d;
-    padding: 14px 45px;
+    padding: 14px 0px;
     position: absolute;
     top: 50px;
     margin-left: 50px;

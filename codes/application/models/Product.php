@@ -33,7 +33,7 @@ class Product extends CI_Model {
             $categories[] = $row['category'];
         }
 
-        //checking if category is in categories table
+        //checking if category is in categories table, might need to revisit to optimize code
         if (in_array($category, $categories))
         {
             $query = "SELECT * FROM Products INNER JOIN Categories ON categories.category_id = products.category_id WHERE categories.category = ?";
@@ -60,6 +60,7 @@ class Product extends CI_Model {
                 return $this->db->query($query)->result_array();
             }
         }
+        //returning all products by default
         else 
         {
             return $this->get_all_products();
@@ -77,6 +78,41 @@ class Product extends CI_Model {
     {
         $query = "SELECT * FROM Cart_items WHERE user_id = ?";
         return $this->db->query($query, $this->security->xss_clean($user_id))->result_array();
+    }
+
+    //fetches similar products with the product_id
+    function get_similar_products($product_id, $category_id)
+    {
+        $query = "SELECT * FROM Products WHERE category_id = ? AND id != ? LIMIT 4";
+        $values = array($this->security->xss_clean($category_id), $this->security->xss_clean($product_id));
+        return $this->db->query($query, $values)->result_array();
+    }
+
+    function add_to_cart($post, $user_id)
+    {
+        $query = "SELECT * FROM Cart_items WHERE user_id = ? AND product_id = ?";
+        $values = array($this->security->xss_clean($user_id), $this->security->xss_clean($post['product_id']));
+        $product = $this->db->query($query, $values)->row_array();
+        if ($product)
+        {
+            $query = "UPDATE Cart_items SET quantity = ?, updated_at = ? WHERE product_id = ? AND user_id = ?";
+            $values = array($this->security->xss_clean($post['quantity'] + $product['quantity']),
+                            date("Y-m-d H:i:s"),
+                            $this->security->xss_clean($post['product_id']),
+                            $this->security->xss_clean($user_id));
+            $this->db->query($query, $values);
+            return;
+        }
+        else 
+        {
+            $query = "INSERT INTO Cart_items (user_id, product_id, quantity, created_at, updated_at) VALUES (?, ?, ?, ?, ?)";
+            $values = array($this->security->xss_clean($user_id),
+                            $this->security->xss_clean($post['product_id']),
+                            $this->security->xss_clean($post['quantity']),
+                            date("Y-m-d H:i:s"),
+                            date("Y-m-d H:i:s"));
+            $this->db->query($query, $values);
+        }
     }
     //-------------------------------------------------------------
 

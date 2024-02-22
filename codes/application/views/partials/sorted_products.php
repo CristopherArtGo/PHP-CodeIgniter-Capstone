@@ -6,12 +6,12 @@
         $main_image = 'short_logo.png';
         if ($product['images'])
         {
-            $main_image = "products/".$product['id']."/".json_decode($product['images'], true)['1'];
+            $main_image = $product['id']."/".json_decode($product['images'], true)['1'];
         }
 ?>
         <li>
             <a href="/products/view_product/<?= $product['id'] ?>">
-                <img src="/assets/images/<?= $main_image ?>" alt="<?= $product['name'] ?>" />
+                <img src="/assets/images/products/<?= $main_image ?>" alt="<?= $product['name'] ?>" />
                 <h3><?= $product['name'] ?></h3>
                 <ul class="rating">
                     <li></li>

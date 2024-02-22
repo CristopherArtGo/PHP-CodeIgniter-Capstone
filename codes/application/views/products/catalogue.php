@@ -26,7 +26,6 @@
             $(document).on('click', '.category_button', function () {
                 $('.category_button').removeClass('active');
                 $(this).addClass('active');
-                $('#search_bar').val('');
 
                 let category = $(this).attr('value');
                 let post = $(this).serializeArray();
@@ -34,8 +33,9 @@
 
                 $.post("/products/sort_category", post, function(res) {
                     $('#product_list').html(res);
-                    // console.log(res);
-                    // return false;
+
+                    //also submits the input in search bar
+                    $('.search_form').submit();
                 });
                 return false;
             });
@@ -48,6 +48,7 @@
                 return false;
             });
 
+            // auto submits when user is typing in search bar
             $('#search_bar').on('keyup', function (){
                 $(this).parent().submit();
             });
