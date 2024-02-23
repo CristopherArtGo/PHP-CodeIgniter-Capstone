@@ -15,61 +15,8 @@
 
         <link rel="stylesheet" href="/assets/css/custom/global.css" />
         <link rel="stylesheet" href="/assets/css/custom/product_view.css" />
+        <script src="/assets/js/global/product_view.js"></script>
     </head>
-
-    <script>
-        $(document).ready(function () {
-            $("#add_to_cart").click(function () {
-                $('#add_to_cart_form').submit();
-                $("<span class='added_to_cart'>Added to cart succesfully!</span>")
-                    .insertAfter(this)
-                    .fadeIn()
-                    .delay(1000)
-                    .fadeOut(function () {
-                        $(this).remove();
-                    });
-                return false;
-            });
-
-            $(document).on('submit', 'form', function() {
-                $.post($(this).attr('action'), $(this).serialize(), function(res){
-                    $('.show_cart').text(res);
-                });
-                return false;
-            });
-
-            $('.show_image').click(function () {
-                $('.show_image').parent().removeClass('active');
-                $(this).parent().addClass('active');
-                $('#image_shown').attr('src', $(this).find('img').attr('src'));
-            });
-
-            $('.change_quantity > li > button').on('click', function() {
-                let new_quantity = +$('#quantity').val() + +$(this).attr('data-quantity-ctrl');
-                if (new_quantity < 1)
-                {
-                    new_quantity = 1;
-                }
-                $('#quantity').val(new_quantity);
-                $('.total_amount').text("$ " + (new_quantity * <?= $product['price'] ?>).toFixed(2));
-            });
-
-            $('#quantity').on('change', function() {
-                $('.total_amount').text("$ " + (+$('#quantity').val() * <?= $product['price'] ?>).toFixed(2));
-                if (!$(this).val() || $(this).val() == "")
-                {
-                    $(this).val(1);
-                    $('.total_amount').text("$ " + (+$('#quantity').val() * <?= $product['price'] ?>).toFixed(2));
-                }
-            });
-
-            $('#quantity').on('keyup', function() {
-                $('.total_amount').text("$ " + (+$('#quantity').val() * <?= $product['price'] ?>).toFixed(2));
-            });
-                
-            
-        });
-    </script>
     <body>
         <div class="wrapper">
             <header>
@@ -110,10 +57,10 @@
             </ul> -->
             </aside>
             <section>
-                <form action="/products" method="post" class="search_form">
-                    <input type="text" name="search" placeholder="Search Products" />
+                <form action="/products/search_product_from_view" method="post" class="search_form">
+                    <input type="text" name="search" placeholder="Search Products"  />
                 </form>
-                <a class="show_cart" href="/products/cart">Cart (<?= count($cart_items) ?>)</a>
+                <a class="show_cart" href="/products/cart">Cart (<?= count($cart_list) ?>)</a>
                 <a href="/products">Go Back</a>
                 <ul>
                     <li>
@@ -157,7 +104,7 @@
                         </ul>
                         <span>36 Rating</span>
                         <span class="amount">$ <?= $product['price'] ?></span>
-                        <p>Lorem ipsum dolor sit amet consectetur. Eget sit posuere enim facilisi. Pretium orci venenatis habitasse gravida nulla tincidunt iaculis. Aliquet at massa quisque libero viverra ut sed. Est vulputate est rutrum nunc nunc pellentesque ultrices pharetra. Mauris euismod sed vel quisque tincidunt suspendisse sed turpis volutpat.</p>
+                        <p><?= $product['description'] ?></p>
                         <form action="/products/add_to_cart" method="post" id="add_to_cart_form">
                             <ul>
                                 <li>

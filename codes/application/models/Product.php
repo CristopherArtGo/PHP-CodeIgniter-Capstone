@@ -74,7 +74,7 @@ class Product extends CI_Model {
         return $this->db->query($query)->result_array();
     }
     
-    function get_cart_items($user_id)
+    function get_cart_list($user_id)
     {
         $query = "SELECT * FROM Cart_items WHERE user_id = ?";
         return $this->db->query($query, $this->security->xss_clean($user_id))->result_array();
@@ -113,6 +113,12 @@ class Product extends CI_Model {
                             date("Y-m-d H:i:s"));
             $this->db->query($query, $values);
         }
+    }
+
+    function get_cart_items($user_id)
+    {
+        $query = "SELECT * FROM Cart_items INNER JOIN Products ON cart_items.product_id = products.id WHERE user_id = ?";
+        return $this->db->query($query, $this->security->xss_clean($user_id))->result_array();
     }
     //-------------------------------------------------------------
 

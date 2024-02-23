@@ -17,46 +17,8 @@
 
         <link rel="stylesheet" href="/assets/css/custom/global.css" />
         <link rel="stylesheet" href="/assets/css/custom/product_dashboard.css" />
-        <!-- <script src="/assets/js/global/admin_products.js"></script> -->
+        <script src="/assets/js/global/dashboard.js"></script>
     </head>
-
-    <script>
-        $(document).ready(function () {   
-            // AJAX for category buttons                
-            $(document).on('click', '.category_button', function () {
-                $('.category_button').removeClass('active');
-                $(this).addClass('active');
-
-                let category = $(this).attr('value');
-                let post = $(this).serializeArray();
-                post.push({"name": "category", "value": category});
-
-                $.post("/products/sort_category", post, function(res) {
-                    $('#product_list').html(res);
-
-                    //also submits the input in search bar
-                    $('.search_form').submit();
-                });
-                return false;
-            });
-
-            //AJAX for search form
-            $(document).on('submit', '.search_form', function() {
-                $.post("/products/sort_name", $(this).serialize(), function(res) {
-                    $('#product_list').html(res);
-                });
-                return false;
-            });
-
-            // auto submits when user is typing in search bar
-            $('#search_bar').on('keyup', function (){
-                $(this).parent().submit();
-            });
-            
-            //auto clicking all products for first page load
-            $('#all_products').click();
-        });
-    </script>
     <body>
         <div class="wrapper">
             <header>
@@ -105,10 +67,10 @@
             </ul> -->
             </aside>
             <section>
-                <form action="/products/sort_name" method="post" class="search_form">
-                    <input type="text" name="search" placeholder="Search Products" id="search_bar"/>
+                <form action="/products/sort_category" method="post" class="search_form">
+                    <input type="text" name="search" placeholder="Search Products" id="search_bar" value="<?= $search ?>"/>
                 </form>
-                <a class="show_cart" href="/products/cart">Cart (<?= count($cart_items) ?>)</a>
+                <a class="show_cart" href="/products/cart">Cart (<?= count($cart_list) ?>)</a>
                 <form action="/products/sort_category" method="post" class="categories_form">
                     <h3>Categories</h3>
                     <ul>
@@ -136,7 +98,6 @@
                     </ul>
                 </form>
                 <div id="product_list">
-                    
                 </div>
             </section>
         </div>

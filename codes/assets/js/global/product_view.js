@@ -1,44 +1,47 @@
-$(document).ready(function(){
-
-
-    $("body").on("click", ".increase_decrease_quantity", function() {
-
-        let input = $(this).closest(".form_control").find("input");
-        let input_val = parseInt(input.val());
-
-        if($(this).attr("data-quantity-ctrl") == 1) {
-            input.val(input_val + 1);
-        }
-        else {
-            if(input_val != 1) {
-                input.val(input_val - 1)
-            }
-        };
-
-        let total_amount = parseInt(input.val()) * parseInt(($(".amount").text()).substring(2));
-        $("#add_to_cart_form").find(".total_amount").text("$ " + total_amount);
-    });
-
-    $("body").on("click", ".show_image", function() {
-
-        let show_image_btn = $(this);
-        show_image_btn.closest("ul").find(".active").removeClass("active");
-        show_image_btn.closest("li").addClass("active");
-        show_image_btn.closest("ul").closest("li").children().first().attr("src", show_image_btn.find("img").attr("src"));
-    });
-
-    $("body").on("submit", "#add_to_cart_form", function() {
-        let form = $(this);
-
-        $.post(form.attr("action"), form.serialize(), function(res) {
-            $(".content_section").html(res);
-            $("#success_modal").modal("show");
-            setTimeout(function() {
-                $("#success_modal").modal("hide")
-            }, 1200);
-        });
-
+$(document).ready(function () {
+    $("#add_to_cart").click(function () {
+        $("#add_to_cart_form").submit();
+        $("<span class='added_to_cart'>Added to cart succesfully!</span>")
+            .insertAfter(this)
+            .fadeIn()
+            .delay(200)
+            .fadeOut(function () {
+                $(this).remove();
+            });
         return false;
     });
-});
 
+    $(document).on("submit", "#add_to_cart_form", function () {
+        $.post($(this).attr("action"), $(this).serialize(), function (res) {
+            $(".show_cart").text(res);
+        });
+        return false;
+    });
+
+    $(".show_image").click(function () {
+        $(".show_image").parent().removeClass("active");
+        $(this).parent().addClass("active");
+        $("#image_shown").attr("src", $(this).find("img").attr("src"));
+    });
+
+    $(".change_quantity > li > button").on("click", function () {
+        let new_quantity = +$("#quantity").val() + +$(this).attr("data-quantity-ctrl");
+        if (new_quantity < 1) {
+            new_quantity = 1;
+        }
+        $("#quantity").val(new_quantity);
+        $(".total_amount").text("$ " + (new_quantity * +$(".amount").text().substring(2)).toFixed(2));
+    });
+
+    $("#quantity").on("change", function () {
+        $(".total_amount").text("$ " + (+$("#quantity").val() * +$(".amount").text().substring(2)).toFixed(2));
+        if (!$(this).val() || $(this).val() == "" || $(this).val() < 1) {
+            $(this).val(1);
+            $(".total_amount").text("$ " + (+$("#quantity").val() * +$(".amount").text().substring(2)).toFixed(2));
+        }
+    });
+
+    $("#quantity").on("keyup", function () {
+        $(".total_amount").text("$ " + (+$("#quantity").val() * +$(".amount").text().substring(2)).toFixed(2));
+    });
+});

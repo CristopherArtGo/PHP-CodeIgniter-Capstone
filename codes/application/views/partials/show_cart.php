@@ -1,1 +1,1 @@
-Cart (<?= count($cart_items) ?>)
+Cart (<?= count($cart_list) ?>)
