@@ -24,7 +24,7 @@ $(document).ready(function () {
         $("#image_shown").attr("src", $(this).find("img").attr("src"));
     });
 
-    $(".change_quantity > li > button").on("click", function () {
+    $(".increase_decrease_quantity").on("click", function () {
         let new_quantity = +$("#quantity").val() + +$(this).attr("data-quantity-ctrl");
         if (new_quantity < 1) {
             new_quantity = 1;

@@ -135,6 +135,22 @@ class Products extends CI_Controller {
 		$this->session->set_flashdata('search', $this->input->post('search'));
 		redirect("/products");
 	}
+
+	public function update_cart()
+	{
+
+		if($this->input->post('remove_cart_item_id'))
+		{
+			$this->Product->remove_cart_item($this->input->post('remove_cart_item_id'), $this->session->userdata('user')['user_id']);
+		}
+		else
+		{
+			$this->Product->update_cart_item($this->input->post(), $this->session->userdata('user')['user_id']);
+		}
+		$cart_items = $this->Product->get_cart_items($this->session->userdata('user')['user_id']);
+		$this->load->view('partials/cart_items', array('userdata'=>$this->session->userdata('user'), 'cart_items'=>$cart_items));
+	}
+
 }
 
 

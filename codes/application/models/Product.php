@@ -120,6 +120,27 @@ class Product extends CI_Model {
         $query = "SELECT * FROM Cart_items INNER JOIN Products ON cart_items.product_id = products.id WHERE user_id = ?";
         return $this->db->query($query, $this->security->xss_clean($user_id))->result_array();
     }
+
+    function update_cart_item($post, $user_id)
+    {
+        $query = "UPDATE Cart_items SET quantity = ?, updated_at = ? WHERE product_id = ? AND user_id = ?";
+        $values = array($this->security->xss_clean($post['update_cart_item_quantity']),
+                        date("Y-m-d H:i:s"),
+                        $this->security->xss_clean($post['update_cart_item_id']),
+                        $this->security->xss_clean($user_id));
+        $this->db->query($query, $values);
+        return;
+    }
+
+    function remove_cart_item($product_id, $user_id)
+    {
+        $query = "DELETE FROM Cart_items WHERE product_id = ? AND user_id = ?";
+        $values = array($this->security->xss_clean($product_id),
+                        $this->security->xss_clean($user_id)
+        );
+        $this->db->query($query, $values);
+        return;
+    }
     //-------------------------------------------------------------
 
     //checks if product form has been filled correctly

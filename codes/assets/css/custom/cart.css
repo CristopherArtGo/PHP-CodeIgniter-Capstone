@@ -117,6 +117,11 @@ body .wrapper > section > section .cart_items_form > ul > li > ul > li input {
     vertical-align: top;
     width: 110px;
 }
+body .wrapper > section > section .cart_items_form > ul > li > ul > li input::-webkit-outer-spin-button,
+body .wrapper > section > section .cart_items_form > ul > li > ul > li input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 body .wrapper > section > section .cart_items_form > ul > li > ul > li .remove_item {
     background-color: transparent;
     background-image: url("../../images/remove.svg");
@@ -219,7 +224,7 @@ body .wrapper > section > section .cart_items_form > ul > li.no_data a:hover {
 }
 body .wrapper > section > section .checkout_form {
     display: inline-block;
-    margin-left: 85px;
+    margin-left: 60px;
     vertical-align: top;
     width: 457px;
 }
@@ -336,4 +341,15 @@ body #card_details_modal .modal-dialog .modal-content button.success {
 .disable_button {
     pointer-events: none !important;
     opacity: 0.5;
+}
+p {
+    color: #7d7d7d;
+    font: 18px/20px roboto_medium, sans-serif;
+}
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+.checkbox_label {
+    color: #7d7d7d;
+    margin-bottom: 30px;
 }

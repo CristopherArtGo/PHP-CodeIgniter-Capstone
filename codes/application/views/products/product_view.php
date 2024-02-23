@@ -110,7 +110,7 @@
                                 <li>
                                     <label>Quantity</label>
                                     <input id="quantity" name="quantity" type="number" min-value="1" value="1" />
-                                    <ul class="change_quantity">
+                                    <ul>
                                         <li><button type="button" class="increase_decrease_quantity" data-quantity-ctrl="1"></button></li>
                                         <li><button type="button" class="increase_decrease_quantity" data-quantity-ctrl="-1"></button></li>
                                     </ul>
