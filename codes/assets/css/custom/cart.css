@@ -207,19 +207,19 @@ body .wrapper > section > section .cart_items_form > ul > li.no_data {
 body .wrapper > section > section .cart_items_form > ul > li.no_data a {
     width: 176px;
     height: 55px;
-    border: 1px solid #9c89ff;
+    border: 1px solid #929864;
     display: inline-block;
     vertical-align: top;
     font: 16px/16px proxima_nova_regular, sans-serif;
     border-radius: 10px;
     padding: 18px 0px;
-    color: #9c89ff;
+    color: #929864;
     margin-top: 16px;
     text-decoration: none;
     transition: 0.21s;
 }
 body .wrapper > section > section .cart_items_form > ul > li.no_data a:hover {
-    background-color: #9c89ff;
+    background-color: #929864;
     color: #fff;
 }
 body .wrapper > section > section .checkout_form {

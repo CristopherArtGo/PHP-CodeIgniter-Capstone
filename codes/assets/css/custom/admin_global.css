@@ -947,6 +947,7 @@ body .form_modal .modal-dialog .modal-content form > ul > li:nth-child(6) > ul {
     font-size: 0px;
     display: inline-block;
     vertical-align: top;
+    height: auto;
 }
 body .form_modal .modal-dialog .modal-content form > ul > li:nth-child(6) > ul li {
     display: inline-block;
@@ -960,6 +961,7 @@ body .form_modal .modal-dialog .modal-content form > ul > li:nth-child(6) > ul l
 }
 body .form_modal .modal-dialog .modal-content form > ul > li:nth-child(6) > ul li:last-child {
     margin-right: 0px;
+    height: auto;
 }
 body .form_modal .modal-dialog .modal-content form > ul > li:nth-child(6) > ul li img {
     width: 141px;
@@ -1068,7 +1070,7 @@ body .form_modal .modal-dialog .modal-content form h3 span {
     margin-left: 30px;
 }
 body .form_modal .modal-dialog .modal-content form > button {
-    background-color: #9c89ff;
+    background-color: #929864;
     border-radius: 10px;
     border: none;
     color: #fff;
@@ -1119,7 +1121,7 @@ body .form_modal .modal-dialog .modal-content form > button[type="button"] {
     right: 7px;
 }
 .delete_product:hover {
-    color: #5f72ff;
+    color: #ff5f5f;
 }
 .profile_dropdown {
     position: absolute;

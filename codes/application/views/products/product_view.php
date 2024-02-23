@@ -107,12 +107,12 @@
                         <p><?= $product['description'] ?></p>
                         <form action="/products/add_to_cart" method="post" id="add_to_cart_form">
                             <ul>
-                                <li>
+                                <li class="quantity_element">
                                     <label>Quantity</label>
                                     <input id="quantity" name="quantity" type="number" min-value="1" value="1" />
                                     <ul>
                                         <li><button type="button" class="increase_decrease_quantity" data-quantity-ctrl="1"></button></li>
-                                        <li><button type="button" class="increase_decrease_quantity" data-quantity-ctrl="-1"></button></li>
+                                        <li><button type="button" class="increase_decrease_quantity" data-quantity-ctrl="0"></button></li>
                                     </ul>
                                 </li>
                                 <li>

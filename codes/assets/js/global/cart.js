@@ -37,13 +37,14 @@ $(document).ready(function () {
             $(".wrapper > section").html(res);
             $(".popover_overlay").fadeOut();
             $(".total_cost").text("$ " + (+$(".order_cost").text().substring(2) + +$(".shipping_cost").text().substring(2)).toFixed(2));
+            $(".billing_info").hide();
         });
         return false;
     });
 
     $(".total_cost").text("$ " + (+$(".order_cost").text().substring(2) + +$(".shipping_cost").text().substring(2)).toFixed(2));
 
-    $("input[type=checkbox]").on("click", function () {
+    $(document).on("click", "input[type=checkbox]", function () {
         $(".billing_info").toggle();
     });
 

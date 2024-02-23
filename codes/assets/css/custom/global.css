@@ -333,7 +333,7 @@ body .form_modal .modal-dialog .modal-content form ul li:nth-child(3) {
 body .form_modal .modal-dialog .modal-content form ul li input {
     background-color: #fff;
     border-radius: 6px;
-    border: 1px solid #dad3ff;
+    border: 1px solid #dfe4b8;
     height: 48px;
     margin-bottom: 25px;
     outline: none;
@@ -343,7 +343,7 @@ body .form_modal .modal-dialog .modal-content form ul li input {
 }
 body .form_modal .modal-dialog .modal-content form ul li input:focus,
 body .form_modal .modal-dialog .modal-content form ul li input:valid {
-    border-color: #9c89ff;
+    border-color: #929864;
     padding: 0px 0px 0px 19px;
 }
 body .form_modal .modal-dialog .modal-content form ul li input:focus + label,
@@ -370,12 +370,12 @@ body .form_modal .modal-dialog .modal-content form h3 {
     text-align: right;
 }
 body .form_modal .modal-dialog .modal-content form h3 span {
-    color: #9c89ff;
+    color: #929864;
     font: 22px/20px roboto_medium, sans-serif;
     margin-left: 30px;
 }
 body .form_modal .modal-dialog .modal-content form button {
-    background-color: #9c89ff;
+    background-color: #929864;
     border-radius: 10px;
     border: none;
     color: #fff;
@@ -435,7 +435,7 @@ body #signup_modal .modal-dialog .modal-content form ul {
 body #login_modal .modal-dialog .modal-content form .switch_to_signup,
 body #signup_modal .modal-dialog .modal-content form .switch_to_signup {
     font: 16px/19px proxima_nova_regular, sans-serif;
-    color: #9c89ff;
+    color: #929864;
     background-color: transparent;
     width: auto;
     height: auto;
@@ -504,9 +504,9 @@ body .popover_overlay {
     right: 20px;
 }
 .logout_btn:hover {
-    color: #9c89ff;
+    color: #929864;
     box-shadow: 0px 4.37332px 12px rgba(156, 137, 255, 0.28);
-    border: 1px solid #9c89ff;
+    border: 1px solid #929864;
 }
 .logout_btn.show {
     opacity: 1;
@@ -533,4 +533,35 @@ body .popover_overlay {
 }
 .show_popover_overlay {
     overflow: hidden;
+}
+a.profile_dropdown {
+    /* position: absolute;
+    left: 7px;
+    top: 5px; */
+    border: none !important;
+    background: none !important;
+    width: 30px;
+    z-index: -1000;
+    color: black;
+}
+body .wrapper header div.admin_dropdown {
+    display: none;
+}
+body .wrapper header div.admin_dropdown.show {
+    top: 20px !important;
+    left: -55px !important;
+    display: block;
+}
+.show > .btn-secondary.dropdown-toggle,
+.btn-secondary.dropdown-toggle {
+    color: black;
+    width: 40px;
+    border: none;
+}
+dropdown-item:focus,
+.dropdown-item:hover {
+    background-color: #8f8f8f;
+    width: 100%;
+    text-align: start;
+    transition: none;
 }

@@ -76,7 +76,7 @@ class Products extends CI_Controller {
 		return array($products, $categories, $total_products);
 	}
 
-	//receives user input for category
+	//receives user input for category and name searched
 	public function sort_category()
 	{
 		if ($this->input->post('category'))
@@ -87,24 +87,16 @@ class Products extends CI_Controller {
 		$this->load->view('partials/sorted_products', array('products'=>$result[0]));
 	}
 
-	//receives user input for category
+	//receives user input for category and name searched
 	public function admin_sort_category()
 	{
 		if ($this->input->post('category'))
 		{
 			$this->session->set_userdata('category', $this->input->post('category'));
 		}
-		$result = $this->sort($this->input->post('category'));
-		$this->load->view('products/admin_products', array('userdata'=>$this->session->userdata('user'), 'products'=>$result[0], 'categories'=>$result[1], 'total_products'=>$result[2]));
+		$result = $this->sort($this->session->userdata('category'), $this->input->post('search'));
+		$this->load->view('partials/admin_sorted_products', array('products'=>$result[0]));
 	}
-
-	//receives user input for name
-	// public function sort_name() 
-	// {
-	// 	$result = $this->sort($this->session->userdata('category'), $this->input->post('search'));
-	// 	$cart_list = $this->check_cart();
-	// 	$this->load->view('partials/sorted_products', array('userdata'=>$this->session->userdata('user'), 'products'=>$result[0], 'categories'=>$result[1], 'total_products'=>$result[2], 'cart_list'=>$cart_list));
-	// }
 
 	//shows product page with similar products 
 	public function view_product($product_id)
@@ -122,23 +114,25 @@ class Products extends CI_Controller {
 		$this->load->view('products/cart', array('userdata'=>$this->session->userdata('user'), 'cart_items'=>$cart_items));
 	}
 
+
+	//adds item to cart
 	public function add_to_cart()
 	{
 		$this->Product->add_to_cart($this->input->post(), $this->session->userdata('user')['user_id']);
 		$cart_list = $this->check_cart();
 		$this->load->view('partials/show_cart', array('cart_list'=>$cart_list));
-		// $this->output->enable_profiler();
 	}
 
+	//redirects to products with the search input
 	public function search_product_from_view()
 	{
 		$this->session->set_flashdata('search', $this->input->post('search'));
 		redirect("/products");
 	}
 
+	//updates cart by updating the quantity of the cart item or removing the item from the cart
 	public function update_cart()
 	{
-
 		if($this->input->post('remove_cart_item_id'))
 		{
 			$this->Product->remove_cart_item($this->input->post('remove_cart_item_id'), $this->session->userdata('user')['user_id']);
@@ -151,6 +145,63 @@ class Products extends CI_Controller {
 		$this->load->view('partials/cart_items', array('userdata'=>$this->session->userdata('user'), 'cart_items'=>$cart_items));
 	}
 
+	public function add_product()
+	{
+		// var_dump($this->input->post());
+		if ($this->input->post('action') === 'upload_image')
+		{
+			$this->do_upload();
+		}
+		if ($this->input->post('action') === 'remove_image')
+		{
+			$images = array();
+			for($i = 0; $i < count($this->session->userdata('images')); $i++)
+			{
+				if ($i != $this->input->post('image_index'))
+				{
+					$images[] = $this->session->userdata('images')[$i];
+				}
+			}
+			$this->session->set_userdata('images', $images);
+			$this->load->view('partials/upload_image', array('images'=>$images));
+		}
+
+	}
+
+	public function do_upload()
+	{
+		$this->load->library('upload');
+		$dataInfo = array();
+		$files = $_FILES;
+		$limit = count($files['image']['name']);
+		if ($limit > 4)
+		{
+			$limit = 4;
+		}
+		for($i = 0; $i < $limit; $i++)
+		{
+			$_FILES['image']['name'] = $files['image']['name'][$i];
+			$_FILES['image']['type'] = $files['image']['type'][$i];
+			$_FILES['image']['tmp_name'] = $files['image']['tmp_name'][$i];
+			$_FILES['image']['error'] = $files['image']['error'][$i];
+			$_FILES['image']['size'] = $files['image']['size'][$i];  
+			
+			$this->upload->initialize($this->set_upload_options());
+			$this->upload->do_upload('image');
+			$dataInfo[] = $this->upload->data();
+		}
+		// var_dump($dataInfo);
+		$this->session->set_userdata('images', $dataInfo);
+		$this->load->view('partials/upload_image', array('images'=>$dataInfo));
+	}
+
+	private function set_upload_options()
+	{
+		$config['upload_path']          = './assets/uploads/';
+		$config['allowed_types']        = 'jpeg|jpg|png';
+		// $config['max_size']             = 100;
+		// $config['max_width']            = 1024;
+		// $config['max_height']           = 768;
+		return $config;
+	}
 }
-
-

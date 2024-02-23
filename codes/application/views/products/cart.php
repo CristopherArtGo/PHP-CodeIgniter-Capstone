@@ -58,7 +58,7 @@
             </ul> -->
             </aside>
             <section>
-                <form class="search_form">
+                <form class="search_form" action="/products/search_product_from_view" method="post">
                     <input type="text" name="search" placeholder="Search Products" />
                 </form>
                 <button class="show_cart">Cart (<?= count($cart_items) ?>)</button>
@@ -168,7 +168,7 @@
                                     <label>Address 1</label>
                                 </li>
                                 <li>
-                                    <input type="text" name="address_2" required />
+                                    <input type="text" name="address_2" />
                                     <label>Address 2</label>
                                 </li>
                                 <li>
@@ -221,7 +221,7 @@
                                     <label>CVC</label>
                                 </li>
                             </ul>
-                            <h3>Total Amount <span>$ 45</span></h3>
+                            <h3>Total Amount <span class="total_cost">$ </span></h3>
                             <button type="button">Pay</button>
                         </form>
                     </div>

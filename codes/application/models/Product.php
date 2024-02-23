@@ -13,7 +13,7 @@ class Product extends CI_Model {
     //get all products
     function get_all_products()
     {
-        $query = "SELECT * FROM Products;";
+        $query = "SELECT * FROM Products INNER JOIN Categories ON categories.category_id = products.category_id;";
         return $this->db->query($query)->result_array();
     }
 
@@ -49,7 +49,7 @@ class Product extends CI_Model {
         }
         else if ($category == "All")
         {
-            $query = "SELECT * FROM Products";
+            $query = "SELECT * FROM Products INNER JOIN Categories ON categories.category_id = products.category_id";
             if ($name)
             {
                 $query .= " WHERE name LIKE CONCAT('%', ? , '%')";
@@ -70,10 +70,11 @@ class Product extends CI_Model {
     // get all categories and their corresponding number of products 
     function get_categories()
     {
-        $query = "SELECT categories.category, COUNT(products.name) AS 'product_count' FROM Products INNER JOIN Categories ON categories.category_id = products.category_id GROUP BY products.category_id";
+        $query = "SELECT categories.category_id, categories.category, COUNT(products.name) AS 'product_count' FROM Products INNER JOIN Categories ON categories.category_id = products.category_id GROUP BY products.category_id";
         return $this->db->query($query)->result_array();
     }
     
+    //gets cart list as basis for number of items in cart
     function get_cart_list($user_id)
     {
         $query = "SELECT * FROM Cart_items WHERE user_id = ?";
@@ -115,12 +116,14 @@ class Product extends CI_Model {
         }
     }
 
+    //get all cart items with product details
     function get_cart_items($user_id)
     {
         $query = "SELECT * FROM Cart_items INNER JOIN Products ON cart_items.product_id = products.id WHERE user_id = ?";
         return $this->db->query($query, $this->security->xss_clean($user_id))->result_array();
     }
-
+    
+    //updates cart item quantity
     function update_cart_item($post, $user_id)
     {
         $query = "UPDATE Cart_items SET quantity = ?, updated_at = ? WHERE product_id = ? AND user_id = ?";
@@ -132,6 +135,7 @@ class Product extends CI_Model {
         return;
     }
 
+    //removes item from cart
     function remove_cart_item($product_id, $user_id)
     {
         $query = "DELETE FROM Cart_items WHERE product_id = ? AND user_id = ?";
@@ -141,6 +145,13 @@ class Product extends CI_Model {
         $this->db->query($query, $values);
         return;
     }
+
+    function add_product($post)
+    {
+        $query = "INSERT INTO Products (name, price, stock, category_id, description, images, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+    }
+
     //-------------------------------------------------------------
 
     //checks if product form has been filled correctly

@@ -54,15 +54,15 @@
                 </ul>
             </aside>
             <section>
-                <form action="admin_sort_name" method="post" class="search_form">
-                    <input type="text" name="search" placeholder="Search Products" />
+                <form action="/products/admin_sort_category" method="post" class="search_form">
+                    <input type="text" name="search" placeholder="Search Products" id="search_bar" />
                 </form>
                 <button class="add_product" data-toggle="modal" data-target="#add_product_modal">Add Product</button>
                 <form action="/products/admin_sort_category" method="post" class="status_form">
                     <h3>Categories</h3>
                     <ul>
                         <li>
-                            <button type="submit" class="active">
+                            <button id="all_products" type="submit" class="active category_button" name="category" value="All">
                                 <span><?= $total_products ?></span><img src="/assets/images/all_products.svg" alt="#" />
                                 <h4>All Products</h4>
                             </button>
@@ -72,7 +72,7 @@
     {
 ?>
                         <li>
-                            <button type="submit" name="category" value="<?= $category['category'] ?>">
+                            <button class="category_button" type="submit" name="category" value="<?= $category['category'] ?>">
                                 <span><?= $category['product_count'] ?></span><img src="/assets/images/<?= $category['category'] ?>.svg" alt="<?= $category['category'] ?>" />
                                 <h4><?= $category['category'] ?></h4>
                             </button>
@@ -96,42 +96,6 @@
                             </tr>
                         </thead>
                         <tbody>
-<?php
-    foreach($products as $product)
-    {
-        $main_image = 'short_logo.png';
-        if ($product['images'])
-        {
-            $main_image = "products/".$product['id']."/".json_decode($product['images'], true)['1'];
-        }
-?>
-                            <tr>
-                                <td>
-                                    <span>
-                                        <img src="/assets/images/<?= $main_image ?>" alt="#" />
-                                        <?= $product['name'] ?>
-                                    </span>
-                                </td>
-                                <td><span><?= $product['id'] ?></span></td>
-                                <td><span>$ <?= $product['price'] ?></span></td>
-                                <td><span></span></td>
-                                <td><span><?= $product['stock'] ?></span></td>
-                                <td><span><?= $product['sold'] ?></span></td>
-                                <td>
-                                    <span>
-                                        <button class="edit_product">Edit</button>
-                                        <button class="delete_product">X</button>
-                                    </span>
-                                    <form class="delete_product_form" action="process.php" method="post">
-                                        <p>Are you sure you want to remove this item?</p>
-                                        <button type="button" class="cancel_remove">Cancel</button>
-                                        <button type="submit">Remove</button>
-                                    </form>
-                                </td>
-                            </tr>
-<?php
-    }
-?>
                         </tbody>
                     </table>
                 </div>
@@ -140,11 +104,11 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <button data-dismiss="modal" aria-label="Close" class="close_modal"></button>
-                        <form class="delete_product_form" action="process.php" method="post">
+                        <form class="add_product_form" action="/products/add_product" method="post" enctype="multipart/form-data">
                             <h2>Add a Product</h2>
                             <ul>
                                 <li>
-                                    <input type="text" name="prouct_name" required />
+                                    <input type="text" name="product_name" required />
                                     <label>Product Name</label>
                                 </li>
                                 <li>
@@ -153,12 +117,16 @@
                                 </li>
                                 <li>
                                     <label>Category</label>
-                                    <select class="selectpicker">
-                                        <option>Cookie</option>
-                                        <option>Brownie</option>
-                                        <option>Bread</option>
-                                        <option>Cake</option>
-                                        <option>Pastry</option>
+                                    <select class="selectpicker" name="category">
+<?php
+    foreach($categories as $category)
+    {
+?>
+                                        <option value="<?= $category['category_id'] ?>" ><?= $category['category'] ?></option>
+
+<?php
+    }
+?>
                                     </select>
                                 </li>
                                 <li>
@@ -170,11 +138,15 @@
                                     <label>Inventory</label>
                                 </li>
                                 <li>
-                                    <label>Upload Images (5 Max)</label>
+                                    <label class="image_label">Upload Images (4 Max)</label>
                                     <ul>
                                         <li><button type="button" class="upload_image"></button></li>
                                     </ul>
-                                    <input type="file" name="image" accept="image/*" />
+                                    <ul class="image_preview_list">
+                                    </ul>
+                                    <input class="image_input" type="file" name="image[]" accept="image/*"  multiple/>
+                                    <input type="hidden" class="form_data_action" name="action" value="">
+                                    <input type="hidden" name="image_index" value="">
                                 </li>
                             </ul>
                             <button type="button" data-dismiss="modal" aria-label="Close">Cancel</button>
