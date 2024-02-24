@@ -54,6 +54,7 @@ $(document).ready(function () {
     $("body").on("change", ".image_input", function () {
         $(".form_data_action").val("upload_image");
         $(".add_product_form").trigger("submit");
+        console.log("images uploaded");
     });
 
     $("body").on("click", "button[type=submit]", function () {
@@ -66,6 +67,7 @@ $(document).ready(function () {
         $("input[name=image_index]").val($(this).attr("data-image-index"));
         $(".form_data_action").val("remove_image");
         $(".add_product_form").trigger("submit");
+        console.log("image removed");
     });
 
     /*  */
@@ -75,12 +77,14 @@ $(document).ready(function () {
         $(".add_product_form").trigger("submit");
         $("input[name=main_image]").prop("checked", false);
         $(this).prop("checked", true);
+        console.log("main image changed");
     });
 
     $("body").on("hidden.bs.modal", "#add_product_modal", function () {
         $(".form_data_action").val("reset_form");
+        console.log("hi");
         $(".add_product_form").trigger("submit");
-        $(".add_product_form").attr("data-modal-action", 0);
+        // $(".add_product_form").attr("data-modal-action", 0);
         // $(".form_data_action").find("textarea").addClass("jhaver");
     });
 
@@ -92,6 +96,9 @@ $(document).ready(function () {
             contentType: false,
             cache: false,
             processData: false,
+            error: (error) => {
+                console.log(JSON.stringify(error));
+            },               
             success: function (res) {
                 let form_data_action = $(".form_data_action").val();
 
@@ -107,8 +114,9 @@ $(document).ready(function () {
                     $(".image_preview_list").html(res);
                 } else if (form_data_action == "reset_form") {
                     resetAddProductForm();
+                    console.log(res);
                 }
-                $(".add_product_form").attr("data-modal-action") == 0 ? $(".form_data_action").val("add_product") : $(".form_data_action").val("edit_product");
+                // $(".add_product_form").attr("data-modal-action") == 0 ? $(".form_data_action").val("add_product") : $(".form_data_action").val("edit_product");
                 $(".image_preview_list").children().length >= 4 ? $(".upload_image").addClass("hidden") : $(".upload_image").removeClass("hidden");
             },
         });
@@ -145,6 +153,7 @@ $(document).ready(function () {
 
     function resetAddProductForm() {
         $(".add_product_form").find("textarea, input[name=product_name], input[name=price], input[name=inventory]").attr("value", "").text("");
+        $(".add_product_form").find("input[name=price], input[name=inventory]").attr("value", "1");
         $("select[name=categories]").find("option").removeAttr("selected").closest("select").val("1").selectpicker("refresh");
         $(".add_product_form")[0].reset();
         $(".image_label").find("span").remove();

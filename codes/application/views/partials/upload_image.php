@@ -5,7 +5,7 @@
 ?>
 <li>
     <button class="delete_image" data-image-index="<?= $count ?>"></button>
-    <img src="/assets/uploads/<?= $image['file_name'] ?>" alt="<?= $image['file_name'] ?>">
+    <img src="/assets/uploads/<?= $image ?>" alt="<?= $image ?>">
 <?php
         if ($count == 0)
         {

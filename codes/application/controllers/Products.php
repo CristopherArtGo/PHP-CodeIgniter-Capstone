@@ -147,23 +147,35 @@ class Products extends CI_Controller {
 
 	public function add_product()
 	{
-		// var_dump($this->input->post());
 		if ($this->input->post('action') === 'upload_image')
 		{
 			$this->do_upload();
 		}
-		if ($this->input->post('action') === 'remove_image')
+
+		//deleting the specific image in the uploads folder
+		else if ($this->input->post('action') === 'remove_image')
 		{
-			$images = array();
-			for($i = 0; $i < count($this->session->userdata('images')); $i++)
+			$this->load->helper('directory');
+			$files = directory_map('./assets/uploads/');
+			
+			for($i = 0; $i < count($files); $i++)
 			{
-				if ($i != $this->input->post('image_index'))
+				if ($i == $this->input->post('image_index'))
 				{
-					$images[] = $this->session->userdata('images')[$i];
+					unlink('./assets/uploads/'.$files[$i]);
 				}
 			}
-			$this->session->set_userdata('images', $images);
+
+			//fetching the file names in the uploads folder
+			$images = directory_map('./assets/uploads/');
 			$this->load->view('partials/upload_image', array('images'=>$images));
+		}
+
+		//clearing the uploads folder
+		else if ($this->input->post('action') === 'reset_form')
+		{
+			$this->load->helper('file');
+			delete_files('./assets/uploads/');
 		}
 
 	}
@@ -171,13 +183,18 @@ class Products extends CI_Controller {
 	public function do_upload()
 	{
 		$this->load->library('upload');
-		$dataInfo = array();
+
+		$config['upload_path']          = './assets/uploads/';
+		$config['allowed_types']        = 'jpeg|jpg|png';
+
 		$files = $_FILES;
 		$limit = count($files['image']['name']);
 		if ($limit > 4)
 		{
 			$limit = 4;
 		}
+
+		//creating a loop to be able to upload more than 1 image
 		for($i = 0; $i < $limit; $i++)
 		{
 			$_FILES['image']['name'] = $files['image']['name'][$i];
@@ -186,22 +203,13 @@ class Products extends CI_Controller {
 			$_FILES['image']['error'] = $files['image']['error'][$i];
 			$_FILES['image']['size'] = $files['image']['size'][$i];  
 			
-			$this->upload->initialize($this->set_upload_options());
+			$this->upload->initialize($config);
 			$this->upload->do_upload('image');
-			$dataInfo[] = $this->upload->data();
 		}
-		// var_dump($dataInfo);
-		$this->session->set_userdata('images', $dataInfo);
-		$this->load->view('partials/upload_image', array('images'=>$dataInfo));
-	}
 
-	private function set_upload_options()
-	{
-		$config['upload_path']          = './assets/uploads/';
-		$config['allowed_types']        = 'jpeg|jpg|png';
-		// $config['max_size']             = 100;
-		// $config['max_width']            = 1024;
-		// $config['max_height']           = 768;
-		return $config;
+		//fetching the file names in the uploads folder
+		$this->load->helper('directory');
+		$images = directory_map('./assets/uploads/');
+		$this->load->view('partials/upload_image', array('images'=>$images));
 	}
 }
