@@ -176,8 +176,4 @@ $(document).ready(function () {
         $(".image_preview_list").children().remove();
         $("#add_product_modal").find("h2").text("Add a Product");
     }
-
-    $(".close_modal").on("click", function () {
-        $(".close_modal").click();
-    });
 });

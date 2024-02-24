@@ -17,13 +17,13 @@ class Users extends CI_Controller {
 	public function login()
 	{
 		$this->check_loggedin();
-		$this->load->view('users/login', array('errors'=>$this->session->flashdata('errors')));
+		$this->load->view('users/login');
 	}
 
 	public function signup()
 	{
 		$this->check_loggedin();
-		$this->load->view('users/signup', array('errors'=>$this->session->flashdata('errors')));
+		$this->load->view('users/signup');
 	}
 
 	public function check_loggedin()
@@ -41,7 +41,7 @@ class Users extends CI_Controller {
 		if ($result != "success")
 		{
 			$this->session->set_flashdata('errors', $result);
-			redirect('users/signup');
+			$this->load->view('partials/signup_errors', array('errors'=>$this->session->flashdata('errors')));
 		}
 		else
 		{
@@ -58,7 +58,7 @@ class Users extends CI_Controller {
 		if ($result != "success")
 		{
 			$this->session->set_flashdata('errors', $result);
-			redirect('users/login');
+			$this->load->view('partials/signup_errors', array('errors'=>$this->session->flashdata('errors')));
 		}
 		else
 		{
@@ -72,14 +72,14 @@ class Users extends CI_Controller {
 		if ($result != "success")
 		{
 			$this->session->set_flashdata('errors', $result);
-			redirect('users/login');	
+			$this->load->view('partials/signup_errors', array('errors'=>$this->session->flashdata('errors')));
 		}
 		else
 		{
 			$user = $this->User->get_user_by_email($user_credentials['email']);
 			$user = array('user_id' => $user['id'], 'first_name' => $user['first_name'], 'is_admin' => $user['is_admin'], 'logged_in' => true);
 			$this->session->set_userdata('user', $user);
-			redirect('/products');
+			$this->load->view('partials/signup_errors', array('errors'=>'success'));
 		}
 
 	}

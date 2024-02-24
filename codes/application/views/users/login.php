@@ -19,27 +19,16 @@
         <link rel="stylesheet" href="/assets/css/custom/global.css" />
         <link rel="stylesheet" href="/assets/css/custom/signup.css" />
         <link rel="stylesheet" href="/assets/css/custom/login.css" />
+        <script src="/assets/js/global/login.js"></script>
     </head>
-    <script>
-        $(document).ready(function () {
-            $("input[name=email]").focus();
-            // $("form").submit(function (event) {
-            //     event.preventDefault();
-            //     return false;
-            // });
-            /* prototype add */
-            // $(".login_btn").click(function () {
-            //     window.location.href = "catalogue.html";
-            // });
-        });
-    </script>
     <body>
         <div class="wrapper">
             <a href=""><img src="/assets/images/main_logo.svg" alt="Mady Bakehouse" /></a>
             <form action="/users/validate_login/" method="post" class="login_form">
                 <h2>Login to order.</h2>
                 <a href="/users/signup">New Member? Register here.</a>
-                <?= $errors ?>
+                <div class="error_div">
+                </div>
                 <ul>
                     <li>
                         <input type="text" name="email" required value="go.cristopher@gmail.com"/>

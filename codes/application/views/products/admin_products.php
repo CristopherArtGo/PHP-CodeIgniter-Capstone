@@ -30,7 +30,7 @@
                 <div class="dropdown show">
                     <a class="btn btn-secondary dropdown-toggle profile_dropdown" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                     <div class="dropdown-menu admin_dropdown" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="login.html">Logout</a>
+                    <a class="dropdown-item" href="/users/logout">Logout</a>
                     </div>
                 </div>
             </header>
