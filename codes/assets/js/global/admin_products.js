@@ -27,7 +27,7 @@ $(document).ready(function () {
     $("#all_products").click();
 
     function sort_products(post) {
-        $.post("/products/admin_sort_category", post, function (res) {
+        $.post("/admins/sort_category", post, function (res) {
             $(".products_table").html(res);
         });
     }
@@ -145,7 +145,7 @@ $(document).ready(function () {
         let post = $(this).serializeArray();
         post.push({ name: "product_id", value: product_id });
 
-        $.post("/products/product_details", post, function (res) {
+        $.post("/admins/product_details", post, function (res) {
             $("#edit_product_modal").html(res);
             $(".selectpicker").selectpicker("refresh");
         });

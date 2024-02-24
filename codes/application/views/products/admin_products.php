@@ -37,16 +37,16 @@
             <aside>
                 <a href="#"><img src="/assets/images/main_logo_white.svg" alt="Mady Bakehouse" /></a>
                 <ul>
-                    <li><a href="admin_orders.html">Orders</a></li>
+                    <li><a href="/admins">Orders</a></li>
                     <li class="active"><a href="#">Products</a></li>
                 </ul>
             </aside>
             <section>
-                <form action="/products/admin_sort_category" method="post" class="search_form">
+                <form action="/admin/sort_category" method="post" class="search_form">
                     <input type="text" name="search" placeholder="Search Products" id="search_bar" />
                 </form>
                 <button class="add_product" data-toggle="modal" data-target="#add_product_modal">Add Product</button>
-                <form action="/products/admin_sort_category" method="post" class="status_form">
+                <form action="/admin/sort_category" method="post" class="status_form">
                     <h3>Categories</h3>
                     <ul>
                         <li>
@@ -72,19 +72,6 @@
                 </form>
                 <div>
                     <table class="products_table">
-                        <thead>
-                            <tr>
-                                <th><h3>Products(<?= count($products) ?>)</h3></th>
-                                <th>ID #</th>
-                                <th>Price</th>
-                                <th>Category</th>
-                                <th>Inventory</th>
-                                <th>Sold</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
                     </table>
                 </div>
             </section>
@@ -92,7 +79,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <button data-dismiss="modal" aria-label="Close" class="close_modal"></button>
-                        <form class="add_product_form" action="/products/add_product" method="post" enctype="multipart/form-data">
+                        <form class="add_product_form" action="/admin/add_product" method="post" enctype="multipart/form-data">
                             <h2>Add a Product</h2>
                             <p class="errors"></p>
                             <ul>

@@ -1,7 +1,7 @@
 <div class="modal-dialog">
     <div class="modal-content">
         <button data-dismiss="modal" aria-label="Close" class="close_modal"></button>
-        <form class="edit_product_form" action="/products/edit_product" method="post" enctype="multipart/form-data">
+        <form class="edit_product_form" action="/admins/edit_product" method="post" enctype="multipart/form-data">
             <h2>Edit Product #<?= $product['id'] ?></h2>
             <p class="errors"></p>
             <ul>

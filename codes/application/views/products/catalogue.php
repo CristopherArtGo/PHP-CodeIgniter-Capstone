@@ -32,7 +32,7 @@
         if($userdata['is_admin'])
         {
 ?>
-                    <a class="switch" href="/products/admin_products">Switch to Admin View</a>
+                    <a class="switch" href="/admins/products">Switch to Admin View</a>
 <?php
         }
 ?>

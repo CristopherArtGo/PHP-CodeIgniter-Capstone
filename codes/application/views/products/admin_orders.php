@@ -52,7 +52,7 @@
                 <a href="#"><img src="/assets/images/main_logo_white.svg" alt="Mady Bakehouse" /></a>
                 <ul>
                     <li class="active"><a href="#">Orders</a></li>
-                    <li><a href="admin_products.html">Products</a></li>
+                    <li><a href="/admins/products">Products</a></li>
                 </ul>
             </aside>
             <section>

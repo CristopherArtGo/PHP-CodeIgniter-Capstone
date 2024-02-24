@@ -38,7 +38,7 @@
                 <button class="edit_product" value="<?= $product['id'] ?>">Edit</button>
                 <button class="delete_product">X</button>
             </span>
-            <form class="delete_product_form" action="/products/delete/" method="post">
+            <form class="delete_product_form" action="/admins/delete/" method="post">
                 <p>Are you sure you want to remove this item?</p>
                 <button type="button" class="cancel_remove">Cancel</button>
                 <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
