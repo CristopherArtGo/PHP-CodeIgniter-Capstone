@@ -131,10 +131,16 @@
 <?php
     foreach($similar_products as $similar_product)
     {
+        $main_image = 'short_logo.png';
+        if ($similar_product['images'])
+        {
+            $images = json_decode($similar_product['images'], true);
+            $main_image = $similar_product['id']."/".$images['1'];
+        }
 ?>
                         <li>
                             <a href="/products/view_product/<?= $similar_product['id'] ?>">
-                                <img src="/assets/images/products/<?= $similar_product['id']."/".json_decode($similar_product['images'], true)[1] ?>" alt="<?= $similar_product['name'] ?>" />
+                                <img src="/assets/images/products/<?= $main_image ?>" alt="<?= $similar_product['name'] ?>" />
                                 <h3><?= $similar_product['name'] ?></h3>
                                 <ul class="rating">
                                     <li></li>

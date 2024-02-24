@@ -156,18 +156,18 @@ class Products extends CI_Controller {
 		else if ($this->input->post('action') === 'remove_image')
 		{
 			$this->load->helper('directory');
-			$files = directory_map('./assets/uploads/');
+			$files = directory_map('./assets/images/uploads/');
 			
 			for($i = 0; $i < count($files); $i++)
 			{
 				if ($i == $this->input->post('image_index'))
 				{
-					unlink('./assets/uploads/'.$files[$i]);
+					unlink('./assets/images/uploads/'.$files[$i]);
 				}
 			}
 
 			//fetching the file names in the uploads folder
-			$images = directory_map('./assets/uploads/');
+			$images = directory_map('./assets/images/uploads/');
 			$this->load->view('partials/upload_image', array('images'=>$images));
 		}
 
@@ -175,7 +175,25 @@ class Products extends CI_Controller {
 		else if ($this->input->post('action') === 'reset_form')
 		{
 			$this->load->helper('file');
-			delete_files('./assets/uploads/');
+			delete_files('./assets/images/uploads/');
+		}
+
+		else if ($this->input->post('action') === 'add_product')
+		{
+			$this->load->helper('file');
+			$this->load->helper('directory');
+			$images = directory_map('./assets/images/uploads/');
+			$result = $this->Product->add_product($this->input->post(), $images);
+			if ($result['id'])
+			{
+				mkdir("./assets/images/products/".$result['id'], 0777);
+				foreach($images as $image)
+				{
+					rename("./assets/images/uploads/".$image, "./assets/images/products/".$result['id']."/".$image);
+				}	
+			}
+			delete_files('./assets/images/uploads/');
+			$this->load->view('partials/form_errors', array('errors'=>$result));
 		}
 
 	}
@@ -184,8 +202,8 @@ class Products extends CI_Controller {
 	{
 		$this->load->library('upload');
 
-		$config['upload_path']          = './assets/uploads/';
-		$config['allowed_types']        = 'jpeg|jpg|png';
+		$config['upload_path'] = './assets/images/uploads/';
+		$config['allowed_types'] = 'jpeg|jpg|png';
 
 		$files = $_FILES;
 		$limit = count($files['image']['name']);
@@ -209,7 +227,22 @@ class Products extends CI_Controller {
 
 		//fetching the file names in the uploads folder
 		$this->load->helper('directory');
-		$images = directory_map('./assets/uploads/');
+		$images = directory_map('./assets/images/uploads/');
 		$this->load->view('partials/upload_image', array('images'=>$images));
+	}
+
+	public function delete()
+	{
+		$this->load->helper('file');
+		$this->Product->delete($this->input->post('product_id'));
+		delete_files('./assets/images/products/'.$this->input->post('product_id', TRUE));
+		rmdir('./assets/images/products/'.$this->input->post('product_id', TRUE));
+	}
+
+	public function product_details()
+	{
+		$product = $this->Product->get_product_by_id($this->input->post('product_id'));
+		$categories = $this->Product->get_categories();
+		$this->load->view('/partials/edit_product_form', array('product'=>$product, 'categories'=>$categories));
 	}
 }

@@ -70,7 +70,7 @@ class Product extends CI_Model {
     // get all categories and their corresponding number of products 
     function get_categories()
     {
-        $query = "SELECT categories.category_id, categories.category, COUNT(products.name) AS 'product_count' FROM Products INNER JOIN Categories ON categories.category_id = products.category_id GROUP BY products.category_id";
+        $query = "SELECT categories.category_id, categories.category, COUNT(products.id) AS 'product_count' FROM products RIGHT JOIN categories ON categories.category_id = products.category_id GROUP BY categories.category_id";
         return $this->db->query($query)->result_array();
     }
     
@@ -146,11 +146,47 @@ class Product extends CI_Model {
         return;
     }
 
-    function add_product($post)
+    function add_product($post, $images)
     {
+        $image_json = array(1=>$this->security->xss_clean($post['main_image']));
+        foreach($images as $image)
+        {
+            $count = 2;
+            if($image != $this->security->xss_clean($post['main_image']))
+            {
+                $image_json[$count] = $image;
+            }
+            $count++;
+        }
+        $image_json = json_encode($image_json, TRUE);
         $query = "INSERT INTO Products (name, price, stock, category_id, description, images, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
+        $values = array($this->security->xss_clean($post['product_name']),
+                        $this->security->xss_clean($post['price']),
+                        $this->security->xss_clean($post['inventory']),
+                        $this->security->xss_clean($post['category']),
+                        $this->security->xss_clean($post['description']),
+                        $image_json,
+                        date("Y-m-d H:i:s"),
+                        date("Y-m-d H:i:s"));
+        if ($this->db->query($query, $values))
+        {
+            $query = "SELECT id FROM Products WHERE name = ?";
+            $result = $this->db->query($query, $this->security->xss_clean($post['product_name']))->row_array();
+            return $result;    
+        }
+        else 
+        {
+            return "Adding product failed.";                
+        }
     }
+
+    function delete($product_id)
+    {
+        $query = "DELETE FROM Products WHERE id = ?";
+        $this->db->query($query, $this->security->xss_clean($product_id));
+    }
+
+
 
     //-------------------------------------------------------------
 

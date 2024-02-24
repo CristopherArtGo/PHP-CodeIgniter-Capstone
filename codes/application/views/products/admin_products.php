@@ -16,18 +16,6 @@
         <link rel="stylesheet" href="/assets/css/custom/admin_global.css" />
         <script src="/assets/js/global/admin_products.js"></script>
     </head>
-    <script>
-        $(document).ready(function () {
-            // $("form").submit(function (event) {
-            //     event.preventDefault();
-            //     return false;
-            // });
-            // /* prototype add */
-            // $(".switch").click(function () {
-            //     window.location.href = "products_dashboard.html";
-            // });
-        });
-    </script>
     <body>
         <div class="wrapper">
             <header>
@@ -106,6 +94,7 @@
                         <button data-dismiss="modal" aria-label="Close" class="close_modal"></button>
                         <form class="add_product_form" action="/products/add_product" method="post" enctype="multipart/form-data">
                             <h2>Add a Product</h2>
+                            <p class="errors"></p>
                             <ul>
                                 <li>
                                     <input type="text" name="product_name" required />
@@ -130,7 +119,7 @@
                                     </select>
                                 </li>
                                 <li>
-                                    <input type="number" name="price" value="1" required />
+                                    <input type="text" name="price" value="1" required/>
                                     <label>Price</label>
                                 </li>
                                 <li>
@@ -144,8 +133,8 @@
                                     </ul>
                                     <ul class="image_preview_list">
                                     </ul>
-                                    <input class="image_input" type="file" name="image[]" accept="image/*"  multiple/>
-                                    <input type="hidden" class="form_data_action" name="action" value="">
+                                    <input class="image_input" type="file" required name="image[]" accept="image/*"  multiple />
+                                    <input type="hidden" class="form_data_action" name="action" value="reset_form">
                                     <input type="hidden" name="image_index" value="">
                                 </li>
                             </ul>
@@ -154,6 +143,8 @@
                         </form>
                     </div>
                 </div>
+            </div>
+            <div class="modal fade form_modal" id="edit_product_modal" tabindex="-1" aria-hidden="true">
             </div>
         </div>
         <div class="popover_overlay"></div>

@@ -5,18 +5,18 @@
 ?>
 <li>
     <button class="delete_image" data-image-index="<?= $count ?>"></button>
-    <img src="/assets/uploads/<?= $image ?>" alt="<?= $image ?>">
+    <img src="/assets/images/uploads/<?= $image ?>" alt="<?= $image ?>">
 <?php
         if ($count == 0)
         {
 ?>
-    <label for="main_image"><input type="checkbox" name="main_image" checked>Mark As Main</label>
+    <label for="main_image"><input type="checkbox" class="main_checkbox" name="main_image" checked value="<?= $image ?>">Mark As Main</label>
 <?php
         }
         else 
         {
 ?>
-    <label for="main_image"><input type="checkbox" class="main_checkbox" name="main_image"  >Mark As Main</label>
+    <label for="main_image"><input type="checkbox" class="main_checkbox" name="main_image" value="<?= $image ?>" >Mark As Main</label>
 <?php
         }
 ?>

@@ -938,6 +938,9 @@ body .form_modal .modal-dialog .modal-content form > ul > li:nth-child(6) .uploa
 body .form_modal .modal-dialog .modal-content form > ul > li:nth-child(6) .upload_image:hover {
     background-color: #f3f1ff;
     border: 1px solid #dad3ff;
+    margin-right: 0;
+    width: 160px;
+    height: 160px;
 }
 body .form_modal .modal-dialog .modal-content form > ul > li:nth-child(6) > input {
     display: none;
@@ -1137,4 +1140,12 @@ body .form_modal .modal-dialog .modal-content form > button[type="button"] {
 }
 .admin_dropdown a {
     color: #ffffff;
+}
+.errors {
+    text-align: start;
+    margin: 0 40px 20px;
+    background-color: #f93e3d;
+    border-radius: 5px;
+    padding: 0 5px;
+    color: white;
 }

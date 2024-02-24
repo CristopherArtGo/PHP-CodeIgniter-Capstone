@@ -168,7 +168,7 @@
                                     <label>Address 1</label>
                                 </li>
                                 <li>
-                                    <input type="text" name="address_2" />
+                                    <input type="text" name="address_2" required />
                                     <label>Address 2</label>
                                 </li>
                                 <li>
