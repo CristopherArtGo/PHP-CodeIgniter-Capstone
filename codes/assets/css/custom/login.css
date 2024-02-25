@@ -1,0 +1,4 @@
+body .wrapper form::after {
+
+    background-position: 100% 0%;
+}
