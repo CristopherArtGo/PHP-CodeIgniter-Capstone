@@ -149,14 +149,14 @@ class Product extends CI_Model {
     function add_product($post, $images)
     {
         $image_json = array(1=>$this->security->xss_clean($post['main_image']));
+        $count = 2;
         foreach($images as $image)
         {
-            $count = 2;
-            if($image != $this->security->xss_clean($post['main_image']))
+            if($image_json[1] != $image)
             {
                 $image_json[$count] = $image;
+                $count++;
             }
-            $count++;
         }
         $image_json = json_encode($image_json, TRUE);
         $query = "INSERT INTO Products (name, price, stock, category_id, description, images, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -177,6 +177,38 @@ class Product extends CI_Model {
         else 
         {
             return "Adding product failed.";                
+        }
+    }
+
+    function edit_product($post, $images)
+    {
+        $image_json = array(1=>$this->security->xss_clean($post['main_image']));
+        $count = 2;
+        foreach($images as $image)
+        {
+            if($image_json[1] != $image)
+            {
+                $image_json[$count] = $image;
+                $count++;
+            }
+        }
+        $image_json = json_encode($image_json, TRUE);
+        $query = "UPDATE Products SET name = ?, price = ?, stock = ?, category_id = ?, description = ?, images = ?, updated_at = ? WHERE id = ?";
+        $values = array($this->security->xss_clean($post['product_name']),
+                        $this->security->xss_clean($post['price']),
+                        $this->security->xss_clean($post['inventory']),
+                        $this->security->xss_clean($post['category']),
+                        $this->security->xss_clean($post['description']),
+                        $image_json,
+                        date("Y-m-d H:i:s"),
+                        $this->security->xss_clean($post['product_id']));
+        if ($this->db->query($query, $values))
+        {
+            return array('id'=>$post['product_id']);    
+        }
+        else 
+        {
+            return "Editing product failed.";                
         }
     }
 

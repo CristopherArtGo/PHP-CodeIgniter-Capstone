@@ -7,6 +7,9 @@ class Admins extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('Product');
+		$this->load->helper('directory');
+		$this->load->helper('file');
+		$this->load->library('upload');
 	}
 
 	public function index()
@@ -18,6 +21,7 @@ class Admins extends CI_Controller {
     {
 		$this->check_admin();
 		$result = $this->load_products();
+		delete_files('./assets/images/uploads/');
 		$this->load->view('products/admin_products', $result);
     }
 
@@ -80,14 +84,13 @@ class Admins extends CI_Controller {
 		//deleting the specific image in the uploads folder
 		else if ($this->input->post('action') === 'remove_image')
 		{
-			$this->load->helper('directory');
-			$files = directory_map('./assets/images/uploads/');
+			$images = directory_map('./assets/images/uploads/');
 			
-			for($i = 0; $i < count($files); $i++)
+			for($i = 0; $i < count($images); $i++)
 			{
 				if ($i == $this->input->post('image_index'))
 				{
-					unlink('./assets/images/uploads/'.$files[$i]);
+					unlink('./assets/images/uploads/'.$images[$i]);
 				}
 			}
 
@@ -99,15 +102,16 @@ class Admins extends CI_Controller {
 		//clearing the uploads folder
 		else if ($this->input->post('action') === 'reset_form')
 		{
-			$this->load->helper('file');
 			delete_files('./assets/images/uploads/');
 		}
 
 		else if ($this->input->post('action') === 'add_product')
 		{
-			$this->load->helper('file');
-			$this->load->helper('directory');
 			$images = directory_map('./assets/images/uploads/');
+			if (!count($images))
+			{
+				return;
+			}
 			$result = $this->Product->add_product($this->input->post(), $images);
 			if ($result['id'])
 			{
@@ -121,24 +125,48 @@ class Admins extends CI_Controller {
 			$this->load->view('partials/form_errors', array('errors'=>$result));
 		}
 
+		else if ($this->input->post('action') === 'edit_product')
+		{
+			$images = directory_map('./assets/images/uploads/');
+			if (!count($images))
+			{
+				return;
+			}
+			$result = $this->Product->edit_product($this->input->post(), $images);
+
+			if ($result['id'])
+			{
+				delete_files("./assets/images/products/".$result['id']);
+				foreach($images as $image)
+				{
+					rename("./assets/images/uploads/".$image, "./assets/images/products/".$result['id']."/".$image);
+				}	
+			}
+			delete_files('./assets/images/uploads/');
+			$this->load->view('partials/form_errors', array('errors'=>$result));
+		}
+
+		else
+		{
+			return;
+		}
 	}
 
 	public function do_upload()
 	{
-		$this->load->library('upload');
-
 		$config['upload_path'] = './assets/images/uploads/';
 		$config['allowed_types'] = 'jpeg|jpg|png';
 
 		$files = $_FILES;
-		$limit = count($files['image']['name']);
-		if ($limit > 4)
+		$limit = 4 - count(directory_map('./assets/images/uploads/'));
+		$img_upload_count = count($files['image']['name']);
+		if ($img_upload_count > $limit)
 		{
-			$limit = 4;
+			$img_upload_count = $limit;
 		}
 
 		//creating a loop to be able to upload more than 1 image
-		for($i = 0; $i < $limit; $i++)
+		for($i = 0; $i < $img_upload_count; $i++)
 		{
 			$_FILES['image']['name'] = $files['image']['name'][$i];
 			$_FILES['image']['type'] = $files['image']['type'][$i];
@@ -151,14 +179,12 @@ class Admins extends CI_Controller {
 		}
 
 		//fetching the file names in the uploads folder
-		$this->load->helper('directory');
 		$images = directory_map('./assets/images/uploads/');
 		$this->load->view('partials/upload_image', array('images'=>$images));
 	}
 
 	public function delete()
 	{
-		$this->load->helper('file');
 		$this->Product->delete($this->input->post('product_id'));
 		delete_files('./assets/images/products/'.$this->input->post('product_id', TRUE));
 		rmdir('./assets/images/products/'.$this->input->post('product_id', TRUE));
@@ -168,6 +194,12 @@ class Admins extends CI_Controller {
 	{
 		$product = $this->Product->get_product_by_id($this->input->post('product_id'));
 		$categories = $this->Product->get_categories();
-		$this->load->view('/partials/edit_product_form', array('product'=>$product, 'categories'=>$categories));
+		$images = directory_map('./assets/images/products/'.$this->input->post('product_id', TRUE));
+		foreach($images as $image)
+		{
+			copy('./assets/images/products/'.$this->input->post('product_id', TRUE).'/'.$image, './assets/images/uploads/'.$image);
+		}
+		$images = directory_map('./assets/images/uploads/');
+		$this->load->view('/partials/edit_product_form', array('product'=>$product, 'categories'=>$categories, 'images'=>$images));
 	}
-}
+}	

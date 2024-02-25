@@ -31,6 +31,7 @@ $(document).ready(function () {
             $(".products_table").html(res);
         });
     }
+
     /* To delete a product */
     $("body").on("click", ".delete_product", function () {
         $(this).closest("tr").addClass("show_delete");
@@ -54,23 +55,19 @@ $(document).ready(function () {
     $("body").on("change", ".image_input", function () {
         $(".form_data_action").val("upload_image");
         $(".add_product_form").trigger("submit");
-        // console.log("images uploaded");
     });
 
     $("body").on("click", "button[type=submit]", function () {
-        $(".form_data_action").val("add_product");
+        $(".add_product_form").attr("data-modal-action") == 0 ? $(".form_data_action").val("add_product") : $(".form_data_action").val("edit_product");
         if ($(".image_preview_list").children().length == 0) {
             $(".image_label").html("Upload Images (4 Max) <span>* Please add an image.</span>");
         }
-        // $(".add_product_form").trigger("submit");
     });
 
     /* To delete an image */
     $("body").on("click", ".delete_image", function () {
         $("input[name=image_index]").val($(this).attr("data-image-index"));
         $(".form_data_action").val("remove_image");
-        $(".add_product_form").trigger("submit");
-        // console.log("image removed");
     });
 
     /*  */
@@ -80,14 +77,13 @@ $(document).ready(function () {
         $(".add_product_form").trigger("submit");
         $("input[name=main_image]").prop("checked", false);
         $(this).prop("checked", true);
-        // console.log("main image changed");
     });
 
     $("body").on("hidden.bs.modal", "#add_product_modal", function () {
         $(".form_data_action").val("reset_form");
-        $(".add_product_form").trigger("submit");
         $(".add_product_form").attr("data-modal-action", 0);
-        // $(".form_data_action").find("textarea").addClass("jhaver");
+        $(".add_product_form").trigger("submit");
+        console.log("closed");
     });
 
     $("body").on("submit", ".add_product_form", function () {
@@ -102,26 +98,20 @@ $(document).ready(function () {
                 let form_data_action = $(".form_data_action").val();
 
                 if (form_data_action == "add_product" || form_data_action == "edit_product") {
-                    if (typeof parseInt(res) == "number") {
-                        // $(".product_content").html(res);
-                        $(".close_modal").click();
+                    if ($(".image_preview_list").children().length == 0) {
+                        $(".image_label").html("Upload Images (4 Max) <span>* Please add an image.</span>");
+                    } else if (typeof parseInt(res) == "number") {
                         resetAddProductForm();
+                        $(".close_modal").click();
                         $(".category_button.active").click();
-                        // $("#add_product_modal").modal("hide");
                     } else {
                         $(".errors").html(res);
-                        if ($(".image_preview_list").children().length == 0) {
-                            $(".image_label").html("Upload Images (4 Max) <span>* Please add an image.</span>");
-                        } else {
-                            $(".image_label").html("Upload Images (4 Max)");
-                        }
                     }
                 } else if (form_data_action == "upload_image" || form_data_action == "remove_image") {
                     $(".image_preview_list").html(res);
                 } else if (form_data_action == "reset_form") {
                     resetAddProductForm();
                 }
-                // $(".add_product_form").attr("data-modal-action") == 0 ? $(".form_data_action").val("add_product") : $(".form_data_action").val("edit_product");
                 $(".image_preview_list").children().length >= 4 ? $(".upload_image").addClass("hidden") : $(".upload_image").removeClass("hidden");
             },
             error: (error) => {
@@ -141,30 +131,25 @@ $(document).ready(function () {
     });
 
     $("body").on("click", ".edit_product", function () {
+        $(".form_data_action").val("edit_product");
+        $(".add_product_form").attr("data-modal-action", 1);
+        // $(".add_product_form").trigger("submit");
+        // $(".product_id").val($(this).attr("value"));
+
         let product_id = $(this).attr("value");
         let post = $(this).serializeArray();
         post.push({ name: "product_id", value: product_id });
 
         $.post("/admins/product_details", post, function (res) {
-            $("#edit_product_modal").html(res);
+            $(".form_details").html(res);
             $(".selectpicker").selectpicker("refresh");
+            $(".image_preview_list").children().length >= 4 ? $(".upload_image").addClass("hidden") : $(".upload_image").removeClass("hidden");
         });
-
         $("input[name=edit_product_id]").val($(this).val());
-        $("#edit_product_modal").modal("show");
-        $(".form_data_action").val("edit_product");
-        // $(".add_product_form").attr("data-modal-action", 1);
-        return false;
-    });
-
-    $("body").on("submit", ".get_edit_data_form", function () {
-        let form = $(this);
-        $.post(form.attr("action"), form.serialize(), function (res) {
-            $(".add_product_form").find(".form_control").html(res);
-            $(".selectpicker").selectpicker("refresh");
-        });
-
-        return false;
+        $("#add_product_modal").modal("show");
+        $("#add_product_modal")
+            .find("h2")
+            .text("Edit product #" + $(this).val());
     });
 
     function resetAddProductForm() {

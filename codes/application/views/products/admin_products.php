@@ -79,10 +79,10 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <button data-dismiss="modal" aria-label="Close" class="close_modal"></button>
-                        <form class="add_product_form" action="/admin/add_product" method="post" enctype="multipart/form-data">
+                        <form class="add_product_form" action="/admins/add_product" method="post" enctype="multipart/form-data">
                             <h2>Add a Product</h2>
                             <p class="errors"></p>
-                            <ul>
+                            <ul class="form_details">
                                 <li>
                                     <input type="text" name="product_name" required />
                                     <label>Product Name</label>
@@ -93,7 +93,7 @@
                                 </li>
                                 <li>
                                     <label>Category</label>
-                                    <select class="selectpicker" name="category">
+                                    <select class="selectpicker" name="category" autocomplete="off">
 <?php
     foreach($categories as $category)
     {
@@ -120,9 +120,11 @@
                                     </ul>
                                     <ul class="image_preview_list">
                                     </ul>
-                                    <input class="image_input" type="file" required name="image[]" accept="image/*"  multiple />
+                                    <input class="image_input" type="file" name="image[]" accept="image/*"  multiple />
                                     <input type="hidden" class="form_data_action" name="action" value="reset_form">
                                     <input type="hidden" name="image_index" value="">
+                                    <input type="hidden" name="product_id" value="">
+
                                 </li>
                             </ul>
                             <button type="button" data-dismiss="modal" aria-label="Close">Cancel</button>
