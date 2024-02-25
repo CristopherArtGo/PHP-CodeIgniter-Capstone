@@ -16,19 +16,6 @@
         <link rel="stylesheet" href="/assets/css/custom/admin_global.css" />
         <script src="/assets/js/global/admin_orders.js"></script>
     </head>
-    <script>
-        // $(document).ready(function () {
-        //     $(".profile_dropdown").on("click", function () {
-        //         let newTop = $(this).offset().top + $(this).outerHeight();
-        //         let newLeft = $(this).offset().left;
-
-        //         $(".admin_dropdown").css({
-        //             top: newTop + "px",
-        //             left: newLeft + "px",
-        //         });
-        //     });
-        // });
-    </script>
     <body>
         <div class="wrapper">
             <header>
@@ -54,7 +41,7 @@
                     <li><a href="/admins/products">Products</a></li>
                 </ul>
             </aside>
-            <section>
+            <section class="main">
                 <form action="/admins/sort_status" method="post" class="search_form">
                     <input id="search_bar" type="text" name="search" placeholder="Search Orders" />
                 </form>
@@ -62,38 +49,34 @@
                     <h3>Status</h3>
                     <ul>
                         <li>
+<?php
+        $order_count = 0;
+        foreach($statuses as $status)
+        {
+            $order_count += $status['order_count'];
+        }
+?>  
                             <button class="status_button" type="submit" class="active" name="status" value="All" id="all_orders">
-                                <span>36</span><img src="/assets/images/all_orders_icon.svg" alt="#" />
+                                <span><?= $order_count ?></span><img src="/assets/images/all_orders_icon.svg" alt="#" />
                                 <h4>All Orders</h4>
                             </button>
                         </li>
+<?php
+    foreach($statuses as $status)
+    {
+?>      
                         <li>
-                        <button class="status_button" type="submit" name="status" value="Pending">
-                                <span>36</span><img src="/assets/images/pending_icon.svg" alt="#" />
-                                <h4>Pending</h4>
+                        <button class="status_button" type="submit" name="status" value="<?= $status['status_id'] ?>>">
+                                <span><?= $status['order_count'] ?></span><img src="/assets/images/<?= $status['status'] ?>_icon.svg" alt="<?= $status['status'] ?>" />
+                                <h4><?= $status['status'] ?></h4>
                             </button>
                         </li>
-                        <li>
-                        <button class="status_button" type="submit" name="status" value="On-Process">
-                                <span>36</span><img src="/assets/images/on_process_icon.svg" alt="#" />
-                                <h4>On-Process</h4>
-                            </button>
-                        </li>
-                        <li>
-                        <button class="status_button" type="submit" name="status" value="Shipped">
-                                <span>36</span><img src="/assets/images/shipped_icon.svg" alt="#" />
-                                <h4>Shipped</h4>
-                            </button>
-                        </li>
-                        <li>
-                        <button class="status_button" type="submit" name="status" value="Delivered">
-                                <span>36</span><img src="/assets/images/delivered_icon.svg" alt="#" />
-                                <h4>Delivered</h4>
-                            </button>
-                        </li>
+<?php
+    }
+?>
                     </ul>
                 </form>
-                <div >
+                <div>
                     <h3>Orders (<?= count($orders) ?>)</h3>
                     <table class="orders_table">
                     </table>

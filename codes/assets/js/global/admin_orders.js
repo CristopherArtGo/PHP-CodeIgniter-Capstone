@@ -33,9 +33,9 @@ $(document).ready(function () {
 
     $(document).on("submit", ".status_update_form", function () {
         $.post($(this).attr("action"), $(this).serialize(), function (res) {
-            console.log(res);
+            // console.log(res);
         });
-        $(".status_button.active").click();
+        // $(".status_button.active").click();
         return false;
     });
 

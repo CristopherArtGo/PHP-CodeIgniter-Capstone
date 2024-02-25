@@ -289,7 +289,7 @@ class Product extends CI_Model {
             $billing_address = array($post['first_name_billing']." ".$post['last_name_billing'], $post['address_1_billing'], $post['address_2_billing'], $post['city_billing'], $post['state_billing'], $post['zip_code_billing']);
             $billing_address = implode(", ", $billing_address);
             $same_billing_address = "0";
-        }g
+        }
         $values[] = $billing_address;
         $values[] = $same_billing_address;
         $values[] = date("Y-m-d H:i:s");
@@ -315,40 +315,50 @@ class Product extends CI_Model {
                             date("Y-m-d H:i:s"));
             $this->db->query($query, $values);
         }
+
+        //add sold and deduct stock
+        foreach ($cart_items as $cart_item)
+        {
+            $query = "UPDATE Products SET stock = ?, sold = ?, updated_at = ? WHERE id = ?";
+            $values = array('quantity - '.$cart_item['quantity'],
+                            $cart_item['quantity'],
+                            date("Y-m-d H:i:s"),
+                            $cart_item['product_id']);
+            $this->db->query($query, $values);
+        }
+
         $query = "DELETE FROM Cart_items WHERE user_id = ?";
         $this->db->query($query, $user_id);
     }
 
     function get_all_orders()
     {
-        $query = "SELECT * FROM Orders";
+        $query = "SELECT * FROM Orders ORDER by created_at DESC";
         return $this->db->query($query)->result_array();
     }
 
-    function search_orders($status, $name = NULL)
+    function search_orders($status_id, $name = NULL)
     {
-        $statuses = array('Pending', 'On-Process', 'Shipped', 'Delivered');
 
-        //checking if status is  array, might need to revisit to optimize code
-        if (in_array($status, $statuses))
+        if ($status_id >= 1 && $status_id <= 4)
         {
-            $query = "SELECT * FROM Orders WHERE status = ?";
+            $query = "SELECT * FROM Orders INNER JOIN Order_status ON order_status.status_id = orders.status_id WHERE orders.status_id = ?";
             if (!$name)
             {
-                return $this->db->query($query, $this->security->xss_clean($status))->result_array();
+                return $this->db->query($query, $this->security->xss_clean($status_id))->result_array();
             }
             else
             {
-                $query .= " AND receiver LIKE CONCAT('%', ? , '%')";
-                return $this->db->query($query, array($this->security->xss_clean($status), $this->security->xss_clean($name)))->result_array();
+                $query .= " AND receiver LIKE CONCAT('%', ?, '%')";
+                return $this->db->query($query, array($this->security->xss_clean($status_id), $this->security->xss_clean($name)))->result_array();
             }
         }
-        else if ($status == "All")
+        else if ($status_id == "All")
         {
             $query = "SELECT * FROM Orders";
             if ($name)
             {
-                $query .= " WHERE receiver LIKE CONCAT('%', ? , '%')";
+                $query .= " WHERE receiver LIKE CONCAT('%', ?, '%')";
                 return $this->db->query($query, $this->security->xss_clean($name))->result_array();
             }
             else
@@ -365,14 +375,18 @@ class Product extends CI_Model {
 
     function update_status($order_id, $status)
     {
-        $statuses = array('Pending', 'On-Process', 'Shipped', 'Delivered');
-        $status = $statuses[$status - 1];
-        $query = "UPDATE Orders SET status = ?, updated_at = ? WHERE id = ?";
+        $query = "UPDATE Orders SET status_id = ?, updated_at = ? WHERE id = ?";
         $values = array($status,
                         date("Y-m-d H:i:s"),
                         $order_id);
         $this->db->query($query, $values);
         return "updated";
+    }
+
+    function get_order_statuses()
+    {
+        $query = "SELECT order_status.status_id, order_status.status, COUNT(orders.id) AS 'order_count' FROM Orders RIGHT JOIN Order_status ON order_status.status_id = orders.status_id GROUP BY order_status.status_id";
+        return $this->db->query($query)->result_array();
     }
 }
 ?>

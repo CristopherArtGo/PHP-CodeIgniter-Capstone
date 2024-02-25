@@ -132,31 +132,31 @@
                         <div class="errors_div"></div>
                         <ul>
                             <li>
-                                <input type="text" name="first_name" required />
+                                <input type="text" name="first_name" required value="John"/>
                                 <label>First Name</label>
                             </li>
                             <li>
-                                <input type="text" name="last_name" required />
+                                <input type="text" name="last_name" required value="Doe" />
                                 <label>Last Name</label>
                             </li>
                             <li>
-                                <input type="text" name="address_1" required />
+                                <input type="text" name="address_1" required value="26160 Kozey Lakes"/>
                                 <label>Address 1</label>
                             </li>
                             <li>
-                                <input type="text" name="address_2" required />
+                                <input type="text" name="address_2" required value="N/A" />
                                 <label>Address 2</label>
                             </li>
                             <li>
-                                <input type="text" name="city" required />
+                                <input type="text" name="city" required value="Clairshire" />
                                 <label>City</label>
                             </li>
                             <li>
-                                <input type="text" name="state" required />
+                                <input type="text" name="state" required value="Iowa" />
                                 <label>State</label>
                             </li>
                             <li>
-                                <input type="text" name="zip_code" required />
+                                <input type="text" name="zip_code" required value="59073"/>
                                 <label>Zip Code</label>
                             </li>
                         </ul>

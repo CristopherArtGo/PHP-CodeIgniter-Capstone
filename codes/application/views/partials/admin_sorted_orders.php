@@ -25,24 +25,21 @@
             <form class="status_update_form" action="/admins/update_status" method="post">
                 <select class="selectpicker" name="status" >
 <?php
-    $statuses = array('Pending', 'On-Process', 'Shipped', 'Delivered');
-    $count = 1;
     foreach($statuses as $status)
     {
-        if($status == $order['status'])
+        if($status['status_id'] == $order['status_id'])
         {
 ?>
 
-                    <option value="<?= $count ?>" selected><?= $status ?></option>
+                    <option value="<?= $status['status_id'] ?>" selected><?= $status['status'] ?></option>
 <?php
         }
         else
         {
 ?>
-                    <option value="<?= $count ?>"><?= $status ?></option>
+                    <option value="<?= $status['status_id'] ?>"><?= $status['status'] ?></option>
 <?php
         }
-        $count++;
     }
 ?>
                 </select>

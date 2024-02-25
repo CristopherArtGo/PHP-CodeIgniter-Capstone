@@ -16,7 +16,8 @@ class Admins extends CI_Controller {
 	{
 		$this->check_admin();
 		$orders = $this->Product->get_all_orders();
-		$this->load->view('products/admin_orders', array('userdata'=>$this->session->userdata('user'), 'orders'=>$orders));
+		$statuses = $this->Product->get_order_statuses();
+		$this->load->view('products/admin_orders', array('userdata'=>$this->session->userdata('user'), 'statuses'=>$statuses,'orders'=>$orders));
 	}
 
 	public function sort_status()
@@ -26,19 +27,13 @@ class Admins extends CI_Controller {
 			$this->session->set_userdata('status', $this->input->post('status'));
 		}
 		$orders = $this->Product->search_orders($this->input->post('status'), $this->input->post('search'));
-		// $statuses = $this->Product->get_status();
-		$total_orders = 0;
-		// foreach($statuses as $status)
-		// {
-		// 	$total_orders += $status['order_count'];
-		// }
-		$this->load->view('partials/admin_sorted_orders', array('userdata'=>$this->session->userdata('user'), 'orders'=>$orders, ));
+		$statuses = $this->Product->get_order_statuses();
+		$this->load->view('partials/admin_sorted_orders', array('userdata'=>$this->session->userdata('user'), 'orders'=>$orders, 'statuses'=>$statuses));
 	}
 
 	public function update_status()
 	{
 		$result = $this->Product->update_status($this->input->post('order_id'), $this->input->post('status'));
-		return $result;
 	}
 
     public function products()

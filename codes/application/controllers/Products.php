@@ -144,7 +144,7 @@ class Products extends CI_Controller {
 		//create order
 		$order_id = $this->Product->create_order($this->session->userdata('user')['user_id'], $this->session->userdata('shipping'));
 
-		// //move cartitem to orderitems and clear cart
+		//move cartitem to orderitems and clear cart
 		$this->Product->cart_to_order($this->session->userdata('user')['user_id'], $order_id);
 
         redirect('/products/cart', 'refresh');
