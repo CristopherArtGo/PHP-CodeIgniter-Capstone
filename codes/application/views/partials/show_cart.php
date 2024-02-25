@@ -1,1 +1,0 @@
-Cart (<?= count($cart_list) ?>)
