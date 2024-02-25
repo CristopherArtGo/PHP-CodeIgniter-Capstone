@@ -619,6 +619,7 @@ body .wrapper > section > div table tbody tr td:nth-child(3) > span span {
 body .wrapper > section > div table tbody tr td:nth-child(4) > span {
     border-left: 1px solid #45495d;
     padding: 29px 20px;
+    width: 100px;
 }
 body .wrapper > section > div table tbody tr td:last-child {
     width: 225px;

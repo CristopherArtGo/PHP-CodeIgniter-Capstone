@@ -14,7 +14,31 @@ class Admins extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->view('products/admin_orders');
+		$this->check_admin();
+		$orders = $this->Product->get_all_orders();
+		$this->load->view('products/admin_orders', array('userdata'=>$this->session->userdata('user'), 'orders'=>$orders));
+	}
+
+	public function sort_status()
+	{
+		if ($this->input->post('status'))
+		{
+			$this->session->set_userdata('status', $this->input->post('status'));
+		}
+		$orders = $this->Product->search_orders($this->input->post('status'), $this->input->post('search'));
+		// $statuses = $this->Product->get_status();
+		$total_orders = 0;
+		// foreach($statuses as $status)
+		// {
+		// 	$total_orders += $status['order_count'];
+		// }
+		$this->load->view('partials/admin_sorted_orders', array('userdata'=>$this->session->userdata('user'), 'orders'=>$orders, ));
+	}
+
+	public function update_status()
+	{
+		$result = $this->Product->update_status($this->input->post('order_id'), $this->input->post('status'));
+		return $result;
 	}
 
     public function products()
@@ -31,14 +55,7 @@ class Admins extends CI_Controller {
 		$this->session->unset_userdata('category');
         $products = $this->Product->get_all_products();
 		$categories = $this->Product->get_categories();
-		$total_products = 0;
-
-		foreach($categories as $category)
-		{
-			$total_products += $category['product_count'];
-		}
-
-		$result = array('userdata'=>$this->session->userdata('user'), 'products'=>$products, 'categories'=>$categories, 'total_products'=>$total_products, 'search'=>$this->session->flashdata('search'));
+		$result = array('userdata'=>$this->session->userdata('user'), 'categories'=>$categories, 'total_products'=>count($products), 'search'=>$this->session->flashdata('search'));
 		return $result;
 	}
 

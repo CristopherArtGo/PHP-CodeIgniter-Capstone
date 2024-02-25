@@ -21,12 +21,8 @@ class Products extends CI_Controller {
 	{
 		$this->session->unset_userdata('category');
 		$categories = $this->Product->get_categories();
-		$total_products = 0;
-		foreach($categories as $category)
-		{
-			$total_products += $category['product_count'];
-		}
-		$result = array('userdata'=>$this->session->userdata('user'), 'categories'=>$categories, 'total_products'=>$total_products, 'search'=>$this->session->flashdata('search'));
+        $products = $this->Product->get_all_products();
+		$result = array('userdata'=>$this->session->userdata('user'), 'categories'=>$categories, 'total_products'=>count($products), 'search'=>$this->session->flashdata('search'));
 		return $result;
 	}
 

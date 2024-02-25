@@ -277,9 +277,11 @@ class Product extends CI_Model {
 
     function create_order($user_id, $post)
     {
-        $shipping_address = array($post['first_name']." ".$post['last_name'], $post['address_1'], $post['address_2'], $post['city'], $post['state'], $post['zip_code']);
+        $total_amount = $this->get_cart_total($user_id) + 5;
+        $receiver = $post['first_name']." ".$post['last_name'];
+        $shipping_address = array($post['address_1'], $post['address_2'], $post['city'], $post['state'], $post['zip_code']);
         $shipping_address  = implode(", ", $shipping_address);
-        $values = array($this->security->xss_clean($user_id), $shipping_address);
+        $values = array($this->security->xss_clean($user_id),$total_amount, $receiver, $shipping_address);
         $same_billing_address = "1";
         $billing_address = NULL;
         if ($post['same_billing_info'] != "on")
@@ -287,13 +289,13 @@ class Product extends CI_Model {
             $billing_address = array($post['first_name_billing']." ".$post['last_name_billing'], $post['address_1_billing'], $post['address_2_billing'], $post['city_billing'], $post['state_billing'], $post['zip_code_billing']);
             $billing_address = implode(", ", $billing_address);
             $same_billing_address = "0";
-        }
+        }g
         $values[] = $billing_address;
         $values[] = $same_billing_address;
         $values[] = date("Y-m-d H:i:s");
         $values[] = date("Y-m-d H:i:s");
 
-        $query = "INSERT INTO Orders (user_id, shipping_address, billing_address, same_billing_address, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO Orders (user_id, total_amount, receiver, shipping_address, billing_address, same_billing_address, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $this->db->query($query, $values);
 
         $query = "SELECT id FROM Orders ORDER BY id DESC ";
@@ -315,6 +317,62 @@ class Product extends CI_Model {
         }
         $query = "DELETE FROM Cart_items WHERE user_id = ?";
         $this->db->query($query, $user_id);
+    }
+
+    function get_all_orders()
+    {
+        $query = "SELECT * FROM Orders";
+        return $this->db->query($query)->result_array();
+    }
+
+    function search_orders($status, $name = NULL)
+    {
+        $statuses = array('Pending', 'On-Process', 'Shipped', 'Delivered');
+
+        //checking if status is  array, might need to revisit to optimize code
+        if (in_array($status, $statuses))
+        {
+            $query = "SELECT * FROM Orders WHERE status = ?";
+            if (!$name)
+            {
+                return $this->db->query($query, $this->security->xss_clean($status))->result_array();
+            }
+            else
+            {
+                $query .= " AND receiver LIKE CONCAT('%', ? , '%')";
+                return $this->db->query($query, array($this->security->xss_clean($status), $this->security->xss_clean($name)))->result_array();
+            }
+        }
+        else if ($status == "All")
+        {
+            $query = "SELECT * FROM Orders";
+            if ($name)
+            {
+                $query .= " WHERE receiver LIKE CONCAT('%', ? , '%')";
+                return $this->db->query($query, $this->security->xss_clean($name))->result_array();
+            }
+            else
+            {
+                return $this->get_all_orders();
+            }
+        }
+        //returning all products by default
+        else 
+        {
+            return $this->get_all_orders();
+        }
+    }
+
+    function update_status($order_id, $status)
+    {
+        $statuses = array('Pending', 'On-Process', 'Shipped', 'Delivered');
+        $status = $statuses[$status - 1];
+        $query = "UPDATE Orders SET status = ?, updated_at = ? WHERE id = ?";
+        $values = array($status,
+                        date("Y-m-d H:i:s"),
+                        $order_id);
+        $this->db->query($query, $values);
+        return "updated";
     }
 }
 ?>
