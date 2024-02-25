@@ -214,4 +214,10 @@ class Admins extends CI_Controller {
 		$images = directory_map('./assets/images/uploads/');
 		$this->load->view('/partials/edit_product_form', array('product'=>$product, 'categories'=>$categories, 'images'=>$images));
 	}
+
+	public function get_order_items()
+	{
+		$order_items = $this->Product->get_order_items($this->input->post('order_id'));
+		$this->load->view('partials/order_items', array('order_items'=>$order_items));
+	}
 }	

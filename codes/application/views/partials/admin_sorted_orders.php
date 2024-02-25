@@ -14,7 +14,7 @@
 ?>
     <tr>
         <td>
-            <span><a href="#"><?= $order['id'] ?></a></span>
+            <span><a class="view_order"><?= $order['id'] ?></a></span>
         </td>
         <td><span><?= $order['created_at'] ?></span></td>
         <td>

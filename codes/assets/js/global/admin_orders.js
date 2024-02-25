@@ -39,35 +39,15 @@ $(document).ready(function () {
         return false;
     });
 
-    // $("body").on("change", ".status_selectpicker", function() {
-    //     $(this).closest("form").find("input[name=status_id]").val($(this).val());
-    //     $(this).closest("form").trigger("submit");
-    // });
+    $(document).on("click", ".view_order", function () {
+        $("#order_details").modal("show");
+        let order_id = $(this).text();
+        let post = $(this).serializeArray();
+        post.push({ name: "order_id", value: order_id });
 
-    // $("body").on("submit", ".update_status_form", function() {
-    //     let form = $(this);
-    //     $.post(form.attr("action"), form.serialize(), function(res) {
-    //         $(".wrapper > section").html(res);
-    //         $(".selectpicker").selectpicker("refresh");
-    //     });
+        $.post("/admins/get_order_items", post, function (res) {
+            $(".order_items").html(res);
+        });        
+    });
 
-    //     return false;
-    // });
-
-    // $("body").on("click", ".status_form button", function() {
-    //     let button = $(this);
-    //     $(".status_form").find("input[name=status_id]").val(button.val());
-    //     $(".status_form").find(".active").removeClass("active");
-    //     button.addClass("active");
-
-    // })
-
-    // $("body").on("submit", ".status_form", function() {
-    //     let form = $(this);
-    //     $.post(form.attr("action"), form.serialize(), function(res) {
-    //         $("tbody").html(res);
-    //         $(".selectpicker").selectpicker("refresh");
-    //     });
-    //     return false;
-    // });
 });

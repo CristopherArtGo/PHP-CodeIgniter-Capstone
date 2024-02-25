@@ -845,7 +845,7 @@ body .form_modal .modal-dialog {
     max-width: 714px;
 }
 body .form_modal .modal-dialog .modal-content {
-    text-align: right;
+    text-align: center;
     position: relative;
     border-radius: 23px;
 }
@@ -1149,4 +1149,17 @@ p.errors {
     border-radius: 5px;
     padding: 0 5px;
     color: white;
+}
+button.exit {
+    background-color: #ce3737;
+    border-radius: 10px;
+    border: none;
+    color: #fff;
+    font: 16px / 19px proxima_nova_bold, sans-serif;
+    height: 55px;
+    margin: 10px auto;
+    transition: 0.21s;
+    display: inline-block;
+    vertical-align: top;
+    width: 120px;
 }

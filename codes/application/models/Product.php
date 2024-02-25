@@ -388,5 +388,11 @@ class Product extends CI_Model {
         $query = "SELECT order_status.status_id, order_status.status, COUNT(orders.id) AS 'order_count' FROM Orders RIGHT JOIN Order_status ON order_status.status_id = orders.status_id GROUP BY order_status.status_id";
         return $this->db->query($query)->result_array();
     }
+
+    function get_order_items($order_id)
+    {
+        $query = "SELECT * FROM Order_items INNER JOIN Products ON order_items.product_id = products.id WHERE order_id = ? ";
+        return $this->db->query($query, $order_id)->result_array();
+    }
 }
 ?>

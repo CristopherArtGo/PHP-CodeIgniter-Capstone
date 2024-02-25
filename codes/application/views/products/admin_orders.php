@@ -30,7 +30,7 @@
                 <div class="dropdown show">
                     <a class="btn btn-secondary dropdown-toggle profile_dropdown" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                     <div class="dropdown-menu admin_dropdown" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="login.html">Logout</a>
+                        <a class="dropdown-item" href="/users/logout">Logout</a>
                     </div>
                 </div>
             </header>
@@ -80,6 +80,17 @@
                     <h3>Orders (<?= count($orders) ?>)</h3>
                     <table class="orders_table">
                     </table>
+                </div>
+                <div class="modal fade form_modal" id="order_details" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <button data-dismiss="modal" aria-label="Close" class="close_modal"></button>
+                            <h2>Order Items</h2>
+                            <div class="order_items">
+                            </div>
+                            <button class="exit" type="button" data-dismiss="modal" aria-label="Close">Close</button>
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>

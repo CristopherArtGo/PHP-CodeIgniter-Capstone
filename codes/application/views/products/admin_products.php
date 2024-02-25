@@ -133,8 +133,6 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade form_modal" id="edit_product_modal" tabindex="-1" aria-hidden="true">
-            </div>
         </div>
         <div class="popover_overlay"></div>
     </body>
