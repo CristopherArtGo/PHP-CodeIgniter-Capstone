@@ -11,6 +11,7 @@ This web application serves as the capstone project for my PHP Track at Village8
 * MAMP
 * JQuery
 * AJAX
+* Stripe API
 
 # Features
 1. Users can register and login to the website
@@ -33,7 +34,7 @@ Start Here --> https://htmlpreview.github.io/?https://github.com/CristopherArtGo
 3. Point the document root to the `codes` folder 
 4. Start the server
 5. Load `mady_ecommerce.sql` to the MySQL database of the server
-5. Go to localhost:8888
+5. Go to `localhost:8888`
 
 ## Contributors
 
