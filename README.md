@@ -1,26 +1,39 @@
-# PHP-CodeIgniter-Capstone
+# E-Commerce Website
 
 # Description
 
-This web application is part of my capstone of the PHP Track during my training in Village88.
-It is an E-commerce website where users can order products and the admin can manage the products and orders within the site.
-It features Mady Bakehouse, a local bakehouse in Iloilo City, selling baked goods locally.
-The original frontend design is by Jhaver Gurtiza from village88 and I'll have some few tweaks to it.
+This web application serves as the capstone project for my PHP Track at Village88. It is an e-commerce site featuring Mady Bakehouse, a local bakery in Iloilo City, offering baked goods for local sale. The original frontend design was created by Jhaver Gurtiza from Village88, with some additions by me. Project was finished in 7 days.
 
-Initial Database Design:
-![Thumbnail](https://github.com/CristopherArtGo/PHP-CodeIgniter-Capstone/blob/main/initial_db_design.png)
+# Tools and Technologies
+* PHP
+* CodeIgniter
+* MySQL
+* MAMP
+* JQuery
+* AJAX
+
+# Features
+1. Users can register and login to the website
+2. Users can view all products and sort by name and category
+3. Users can add products to cart
+4. Users can checkout with credit cards
+5. Admins can add and edit products
+6. Admins can view and update orders
+
+# Database Design:
+![Thumbnail](https://github.com/CristopherArtGo/PHP-CodeIgniter-Capstone/blob/main/ERD.png)
 
 # Clickable Prototype
 Start Here --> https://htmlpreview.github.io/?https://github.com/CristopherArtGo/PHP-CodeIgniter-Capstone/blob/main/clickable_prototype/pages/index.html
 
-<!-- ## Installation
+## Installation
 
-1. Fork the project
-2. Clone the project
-3. Follow the instructions in the console:
-4. Navigate to the project directory cd sos-animals
-5. Install the dependencies npm install
-6. Run the project npm start -->
+1. Clone the project to local device
+2. Open MAMP
+3. Point the document root to the `codes` folder 
+4. Start the server
+5. Load `mady_ecommerce.sql` to the MySQL database of the server
+5. Go to localhost:8888
 
 ## Contributors
 
